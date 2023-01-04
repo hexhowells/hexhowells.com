@@ -1,0 +1,305 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #252637;
+    color: white;
+}
+
+body a {
+    text-decoration: none;
+    color: #0088FF;
+}
+
+body a:hover {
+    color: #de43de;
+    cursor: pointer;
+}
+
+@font-face {
+	font-family: 'poppins600';
+	src: url('fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'poppins300';
+	src: url('fonts/Poppins/Poppins-Light.ttf') format('truetype');
+}
+
+
+.header {
+	display: grid;
+	height: fit-content;
+	background-color: #252637;
+	box-shadow: 0px 1px 1px #9500F9;
+	padding-bottom: 30px;
+    padding-top: 20px;
+}
+
+.logo {
+	align-self: center;
+	text-align: center;
+	margin: auto;
+	padding: 30px 0px 0px 0px;
+}
+
+.logo img {
+	height: 120px;
+	border-radius: 50%;
+}
+
+.title {
+	max-width: 800px;
+	align-self: center;
+	text-align: center;
+	font-family: poppins600;
+	margin: auto;
+	padding: 0px 50px 0px 50px;
+}
+
+.title h1 {
+	color: white;
+	font-size: 40px;
+}
+
+
+.links-container {
+	display: grid;
+	align-self: center;
+	margin: auto;
+}
+
+.links-container a {
+	text-decoration: none;
+}
+
+.nav-link {
+    margin: 15px;
+    grid-row-start: 3;
+    grid-row-end: 3;
+    font-family: poppins300;
+    font-size: 20px;
+}
+
+.nav-link a {
+    color: #0088FF;
+}
+
+.nav-link a:hover {
+    color: #de43de;
+    cursor: pointer;
+}
+
+.icon-container {
+	padding-right: 10px;
+	padding-left: 10px;
+	height: 30px;
+}
+
+.icon-container:hover {
+	cursor: pointer;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+}
+
+
+/* Project list  */
+
+
+.main {
+	margin: auto;
+	padding: 20px 5% 0px 5%;
+	max-width: 850px;
+    font-family: poppins300;
+}
+
+.main h1 {
+    font-family: poppins600;
+}
+
+.main li {
+    font-family: poppins300;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+
+.projects-container {
+	padding-top: 20px;
+}
+
+.container {
+	display: grid;
+	grid-row-gap: 10px;
+	background-color: #252637;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #9500F9;
+	/*box-shadow: 0px 1px 4px #9500F9;*/
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	padding-right: 30px;
+	grid-template-columns: min-content auto;
+}
+
+.thumbnail-img {
+	align-self: center;
+	/*max-height: 120px;*/
+	max-width: 150px;
+	width: auto;
+	padding: 50px;
+	grid-row-start: 1;
+	grid-row-end: 4;
+}
+
+@media (max-width: 600px) {
+	.thumbnail-img {
+		padding: 20px;
+		max-width: 100px;
+	}
+}
+
+.project-title {
+	color: black;
+	font-family: poppins600;
+	padding: 30px 0px 0px 0px;
+	grid-row-start: 1;
+	grid-row-end: 1;
+    font-size: 18px;
+}
+
+.project-title a {
+	text-decoration: none;
+	color: white;
+}
+
+.project-intro {
+	grid-row-start: 2;
+	grid-row-end: 2;
+	font-family: poppins300;
+	font-size: 16px;
+	color: #f0f0f0
+}
+
+.readmore {
+	grid-row-start: 3;
+	grid-row-end: 3;
+	font-family: poppins300;
+	font-size: 16px;
+}
+
+.readmore a {
+	color: #0088FF;
+}
+
+.readmore a:hover {
+	color: #de43de;
+	cursor: pointer;
+}
+
+.inactive-link {
+	font-family: poppins300;
+	font-size: 15px;
+	pointer-events: none;
+	cursor: default;
+}
+
+.inactive-link a {
+	color: black;
+}
+
+.small-list li {
+    font-size: 18px;
+    margin: 0px;
+}
+
+.big-list li {
+    margin-bottom: 10px;
+}
+
+
+/* blog styles */
+.blog-header {
+	display: grid;
+	height: fit-content;
+	background-color: #252637;
+	box-shadow: 0px 1px 1px #9500F9;
+	font-family: poppins600;
+}
+
+.blog-header a {
+	color: white;
+}
+
+.blog-header a:hover {
+	color: white;
+}
+
+.blog-container {
+    padding-bottom: 40px;
+}
+
+.blog-link {
+    text-decoration: none;
+    font-family: poppins300;
+    color: #0088FF;
+    font-size: 22px;
+    margin: 0px;
+}
+
+.blog-link:hover {
+    color: #de43de;
+    cursor: pointer;
+}
+
+.date {
+    font-size: 14px;
+    margin: 0px;
+}
+
+.category {
+    font-size: 11px;
+    margin: 0px;
+    padding-top: 5px;
+}
+
+.category-tag {
+    background-color: #5d117d;
+    padding: 2px 5px 2px 5px;
+    border-radius: 5px
+}
+
+.content {
+	flex:  1;
+	margin: auto;
+	padding: 20px 5% 50px 5%;
+	max-width: 750px;
+	font-family: poppins300;
+	line-height: 1.6;
+	align-content: left;
+	font-size: 16px;
+}
+
+
+
+/* Changes for mobile */
+@media screen and (max-width: 600px) {
+  .nav-link {
+    margin: 10px;
+    font-size: 15px;
+  }
+
+  .project-title {
+    font-size: 16px;
+  }
+
+  .project-intro {
+    font-size: 14px;
+  }
+
+  .readmore {
+    font-size: 14px;
+  }
+}
