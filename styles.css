@@ -280,6 +280,7 @@ body a:hover {
 	line-height: 1.6;
 	align-content: left;
 	font-size: 16px;
+	word-wrap: break-word;
 }
 
 
@@ -301,5 +302,9 @@ body a:hover {
 
   .readmore {
     font-size: 14px;
+  }
+
+  .content {
+  	font-size: 12px;
   }
 }
