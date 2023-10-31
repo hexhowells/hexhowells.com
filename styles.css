@@ -259,18 +259,6 @@ body a:hover {
     margin: 0px;
 }
 
-.category {
-    font-size: 11px;
-    margin: 0px;
-    padding-top: 5px;
-}
-
-.category-tag {
-    background-color: #5d117d;
-    padding: 2px 5px 2px 5px;
-    border-radius: 5px
-}
-
 .content {
 	flex:  1;
 	margin: auto;
@@ -283,6 +271,19 @@ body a:hover {
 	word-wrap: break-word;
 }
 
+.content h1 {
+	font-family: poppins300;
+	font-weight: normal;
+	padding-bottom: 10px;
+	border-bottom: solid grey 1px;
+	margin-bottom: 0px;
+}
+
+.blog-date {
+	font-size: 14px;
+	margin-top: 5px;
+	color: #c9c9c9;
+}
 
 
 /* Changes for mobile */
