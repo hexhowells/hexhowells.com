@@ -1,0 +1,100 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>HexBlog</title>
+  <meta name="description" content="HexHowells Blog.">
+  <meta name="author" content="SitePoint">
+
+  <meta property="og:title" content="HexHowells Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.blog.hexhowells.com/">
+  <meta property="og:description" content="HexHowells Blog">
+
+  <link rel="stylesheet" href="../styles.css?v=1.0">
+
+  <!-- MaxJax for inline LaTeX -->
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <!-- highlight.js for code syntax hightlighting-->
+  <link rel="stylesheet" href="styles/tokyo-night-dark.min.css">
+  <script src="styles/highlight.min.js"></script>
+
+  <script>hljs.highlightAll();</script>
+
+</head>
+
+<body>
+  <div class="blog-header">
+    <div class="title">
+      <h2><a href="https://hexhowells.com/blog.html">HexHowells</a></h2>
+    </div>
+  </div>
+  <div class="content">
+    <h1>Advent of Code 2023 [Writeup]</h1>
+    <p class="blog-date">Dec 2023</p>
+    <br>
+    <p>
+        The following are writeups for ecah day's puzzles of advent of code 2023. All solutions are written in Python
+        and can be found here <a href="https://github.com/hexhowells/AdventOfCode">https://github.com/hexhowells/AdventOfCode</a>.
+    </p>
+
+    <ul>
+      <li><a href="#day01">Day 01</a></li>
+      <!-- <li><a href="#day02">Day 02</a></li>
+      <li><a href="#day03">Day 03</a></li>
+      <li><a href="#day04">Day 04</a></li>
+      <li><a href="#day05">Day 05</a></li> -->
+    </ul>
+
+    <!-- 
+      Day 1 solution
+    -->
+    <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2023/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p>Each line consists of characters with some characters being integers, iterate over each character and check if it's a digit, this can be done in Python with the function <code>string.isdigit()</code> all the integers found can be appended to a string and the last and first characters in the string can be combined and added to the running total.</p>
+
+      <h3><u>Part 2</u></h3>
+      <p>Part 2 requires parsing not only the individual characters but substrings in order to find digits, this can be done in a hacky way by using Python's <code>replace()</code> function. Here we can replace each occurance of "one", "two", "three", etc with its respective digit then do the same as part 1.</p>
+      <p>However consider the edgecases: </p>
+
+      <pre><code class="raw">
+      twone
+      oneeight
+      sevenine
+      </code></pre>
+
+      <p>when replacing the substring with a digit we corrupt the other substring (e.g. <code>"2ne"</code> therefore to make our solution even more hacky we can keep the first and last character of the substring inserting the digit inbetween.</p>
+
+<pre><code class="language-python">
+# convert the digit strings into single digit values
+def convert(line):
+  for i, digit in enumerate(['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']):
+    line = line.replace(digit, digit[0] + str(i+1) + digit[-1])
+
+  return line
+      </code></pre>
+
+    </div>
+
+    <!-- 
+      Day 2 solution
+    -->
+    <!-- <div class="section" id="day02">
+      <h2>Day 02</h2>
+      <p>Solution here</p>
+    </div>
+ -->
+  </div>
+</body>
+</html>
