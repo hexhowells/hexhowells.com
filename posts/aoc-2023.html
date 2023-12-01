@@ -62,11 +62,11 @@
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p>Each line consists of characters with some characters being integers, iterate over each character and check if it's a digit, this can be done in Python with the function <code>string.isdigit()</code> all the integers found can be appended to a string and the last and first characters in the string can be combined and added to the running total.</p>
+      <p>Each line consists of characters with some of those characters being integers, we can use some regex (<code>"\d"</code>) to extract single digits from the string then concatenate the first and last digits found and accumulate. Since we're working with all single digits concatenation can be done by multiplying the first digit by 10 then adding the second, which will be faster than converting to strings and back.</p>
 
       <h3><u>Part 2</u></h3>
-      <p>Part 2 requires parsing not only the individual characters but substrings in order to find digits, this can be done in a hacky way by using Python's <code>replace()</code> function. Here we can replace each occurance of "one", "two", "three", etc with its respective digit then do the same as part 1.</p>
-      <p>However consider the edgecases: </p>
+      <p>Part 2 requires parsing not only the individual characters but sub strings in order to find digits, this can be done in a hacky way by using Python's <code>replace()</code> function. Here we can replace each occurrence of "one", "two", "three", etc with its respective digit then do the same as part 1.</p>
+      <p>However consider the edge cases: </p>
 
       <pre><code class="raw">
       twone
@@ -74,7 +74,7 @@
       sevenine
       </code></pre>
 
-      <p>when replacing the substring with a digit we corrupt the other substring (e.g. <code>"2ne"</code> therefore to make our solution even more hacky we can keep the first and last character of the substring inserting the digit inbetween.</p>
+      <p>when replacing the sub string with a digit we corrupt the other sub string (e.g. <code>"2ne"</code> therefore to make our solution even more hacky we can keep the first and last character of the sub string inserting the digit in between.</p>
 
 <pre><code class="language-python">
 # convert the digit strings into single digit values
