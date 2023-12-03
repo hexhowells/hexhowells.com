@@ -47,8 +47,8 @@
     <ul>
       <li><a href="#day01">Day 01</a></li>
       <li><a href="#day02">Day 02</a></li>
-      <!-- <li><a href="#day03">Day 03</a></li>
-      <li><a href="#day04">Day 04</a></li>
+      <li><a href="#day03">Day 03</a></li>
+      <!-- <li><a href="#day04">Day 04</a></li>
       <li><a href="#day05">Day 05</a></li>
       <li><a href="#day06">Day 06</a></li> -->
     </ul>
@@ -69,11 +69,11 @@
       <p>Part 2 requires parsing not only the individual characters but sub strings in order to find digits, this can be done in a hacky way by using Python's <code>replace()</code> function. Here we can replace each occurrence of "one", "two", "three", etc with its respective digit then do the same as part 1.</p>
       <p>However consider the edge cases: </p>
 
-      <pre><code class="raw">
-      twone
-      oneeight
-      sevenine
-      </code></pre>
+  <pre><code class="plaintext">
+  twone
+  oneeight
+  sevenine
+  </code></pre>
 
       <p>when replacing the sub string with a digit we corrupt the other sub string (e.g. <code>"2ne"</code> therefore to make our solution even more hacky we can keep the first and last character of the sub string inserting the digit in between.</p>
 
@@ -104,23 +104,64 @@ def convert(line):
     </div>
 
 
- <!-- 
+    <!-- 
       Day 3 solution
     -->
-    <!-- <div class="section" id="day02">
+    <div class="section" id="day03">
       <h2>Day 03</h2>
       <a href="https://adventofcode.com/2023/day/3" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_03.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
-      <h3><u>Part 2</u></h3>
-    </div>
- -->
+      <p>
+      Today's problem was a grid problem, i used my custom grid class in my helper file which lets me iterate over all the points, get neighbours, handle valid points, etc.
+      </p>
 
- <!-- 
+      <p>
+      First we need to find all the symbols by iterating over each point in the the grid and get any points that are not <code>.</code> or a digit. For each symbol we can check if any of the neighbours of that symbol are digits (which will be a single digit from a valid part number) and record the coords of that digit.
+      </p>
+  <pre><code class="plaintext">
+  ...*......
+  ..35..633.
+  ......#...
+
+  6 and 3 are digits next to '#'
+
+  3 and 5 are valid digits next to '*'
+  </code></pre>
+
+      <p>
+      Now we have a bunch of coords of digits that belong to valid part numbers we need to get the full part number, this can be done by starting at the found digit and moving backwards and forwards through the row until we hit a non digit symbol. 
+  <pre><code class="plaintext">
+  .664.598.. # move left until we hit a non digit
+        ^
+  .664.598..  
+       ^
+  .664.598..  # found start of digit
+      ^
+
+  .664.598..  # move right until we hit a non digit
+        ^
+  .664.598..
+         ^
+  .664.598..  # found end of digit
+          ^
+  </code></pre>
+      </p>
+      <p>
+      The last step is to remove any duplicates since a part number may be adjacent to multiple symbols or we may find multiple digits from the same part number next to a symbol. We can then accumulate the results.
+      </p>
+      <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 was relatively straight forward given the above solution. Now we only find neighbouring digits next to the symbol <code>*</code>. Once we extract the full part number and de-duplicate we can check if 2 part numbers are next to the symbol and multiply them together.
+      </p>
+    </div>
+
+
+    <!-- 
       Day 4 solution
     -->
-    <!-- <div class="section" id="day02">
+    <!-- <div class="section" id="day04">
       <h2>Day 04</h2>
       <a href="https://adventofcode.com/2023/day/4" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
@@ -130,10 +171,10 @@ def convert(line):
     </div>
  -->
 
- <!-- 
+    <!-- 
       Day 5 solution
     -->
-    <!-- <div class="section" id="day02">
+    <!-- <div class="section" id="day05">
       <h2>Day 05</h2>
       <a href="https://adventofcode.com/2023/day/5" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
@@ -143,10 +184,10 @@ def convert(line):
     </div>
  -->
 
- <!-- 
+    <!-- 
       Day 6 solution
     -->
-    <!-- <div class="section" id="day02">
+    <!-- <div class="section" id="day06">
       <h2>Day 06</h2>
       <a href="https://adventofcode.com/2023/day/6" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
