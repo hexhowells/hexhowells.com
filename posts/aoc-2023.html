@@ -48,9 +48,28 @@
       <li><a href="#day01">Day 01</a></li>
       <li><a href="#day02">Day 02</a></li>
       <li><a href="#day03">Day 03</a></li>
-      <!-- <li><a href="#day04">Day 04</a></li>
-      <li><a href="#day05">Day 05</a></li>
-      <li><a href="#day06">Day 06</a></li> -->
+      <li><a href="#day04">Day 04</a></li>
+      <!-- <li><a href="#day05">Day 05</a></li>
+      <li><a href="#day06">Day 06</a></li>
+      <li><a href="#day07">Day 07</a></li>
+      <li><a href="#day08">Day 08</a></li>
+      <li><a href="#day09">Day 09</a></li>
+      <li><a href="#day10">Day 10</a></li>
+      <li><a href="#day11">Day 11</a></li>
+      <li><a href="#day12">Day 12</a></li>
+      <li><a href="#day13">Day 13</a></li>
+      <li><a href="#day14">Day 14</a></li>
+      <li><a href="#day15">Day 15</a></li>
+      <li><a href="#day16">Day 16</a></li>
+      <li><a href="#day17">Day 17</a></li>
+      <li><a href="#day18">Day 18</a></li>
+      <li><a href="#day19">Day 19</a></li>
+      <li><a href="#day20">Day 20</a></li>
+      <li><a href="#day21">Day 21</a></li>
+      <li><a href="#day22">Day 22</a></li>
+      <li><a href="#day23">Day 23</a></li>
+      <li><a href="#day24">Day 24</a></li>
+      <li><a href="#day25">Day 25</a></li> -->
     </ul>
 
     <!-- 
@@ -161,15 +180,44 @@ def convert(line):
     <!-- 
       Day 4 solution
     -->
-    <!-- <div class="section" id="day04">
+    <div class="section" id="day04">
       <h2>Day 04</h2>
       <a href="https://adventofcode.com/2023/day/4" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_04.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        This problem just requires us to iterate over each scratchcard, find the number of matching numbers, and calculate the score. The score doubles for every matching number we have so this can be calculated with the following:
+      </p>
+
+      $$ score = 2^{m-1} \quad \text{where } m > 0 $$
+
+      <p>
+        Where <strong>m</strong> is the number of matching numbers.
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 was solved using memoisation where for each card number the number of additional cards gained was recursively calcuated and saved. 
+      </p>
+      <p>
+        Specifically, for each card we find the number of matches <strong>m</strong> then get the next <strong>m</strong> cards (these are our additional winning cards). For each new card gained find the number of cards that scratchcard will gain, this will either already be known from previous calculation or need to be recursively calcuated. An overview of the psuedocode can be seen below:
+      </p>
+<pre><code class="plaintext">
+1. for each scratchcard
+2.   m <- number of matches
+3.   for each new_card given by m
+4.     if num_cards(new_card) already known 
+5.       accumulate to answer
+6.     else
+7.       calcuate num_cards(new_card) and add answer to known
+
+</code></pre>
+    <p>
+      Where num_cards() is steps 2 through 7
+    </p>
+      
     </div>
- -->
+
 
     <!-- 
       Day 5 solution
@@ -178,7 +226,7 @@ def convert(line):
       <h2>Day 05</h2>
       <a href="https://adventofcode.com/2023/day/5" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_04.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_05.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
       <h3><u>Part 2</u></h3>
     </div>
@@ -191,7 +239,59 @@ def convert(line):
       <h2>Day 06</h2>
       <a href="https://adventofcode.com/2023/day/6" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_04.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_06.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+    <!-- 
+      Day 7 solution
+    -->
+    <!-- <div class="section" id="day07">
+      <h2>Day 07</h2>
+      <a href="https://adventofcode.com/2023/day/7" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_07.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+   <!-- 
+      Day 8 solution
+    -->
+    <!-- <div class="section" id="day08">
+      <h2>Day 08</h2>
+      <a href="https://adventofcode.com/2023/day/8" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_08.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+   <!-- 
+      Day 9 solution
+    -->
+    <!-- <div class="section" id="day09">
+      <h2>Day 09</h2>
+      <a href="https://adventofcode.com/2023/day/9" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_09.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+   <!-- 
+      Day 10 solution
+    -->
+    <!-- <div class="section" id="day10">
+      <h2>Day 10</h2>
+      <a href="https://adventofcode.com/2023/day/10" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_10.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
       <h3><u>Part 2</u></h3>
     </div>
