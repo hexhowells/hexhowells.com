@@ -49,8 +49,8 @@
       <li><a href="#day02">Day 02</a></li>
       <li><a href="#day03">Day 03</a></li>
       <li><a href="#day04">Day 04</a></li>
-      <!-- <li><a href="#day05">Day 05</a></li>
-      <li><a href="#day06">Day 06</a></li>
+      <li><a href="#day05">Day 05</a></li>
+      <!-- <li><a href="#day06">Day 06</a></li>
       <li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
@@ -197,10 +197,10 @@ def convert(line):
       </p>
       <h3><u>Part 2</u></h3>
       <p>
-        Part 2 was solved using memoisation where for each card number the number of additional cards gained was recursively calcuated and saved. 
+        Part 2 was solved using memoisation where for each card number the number of additional cards gained was recursively calculated and saved. 
       </p>
       <p>
-        Specifically, for each card we find the number of matches <strong>m</strong> then get the next <strong>m</strong> cards (these are our additional winning cards). For each new card gained find the number of cards that scratchcard will gain, this will either already be known from previous calculation or need to be recursively calcuated. An overview of the psuedocode can be seen below:
+        Specifically, for each card we find the number of matches <strong>m</strong> then get the next <strong>m</strong> cards (these are our additional winning cards). For each new card gained find the number of cards that scratchcard will gain, this will either already be known from previous calculation or need to be recursively calculated. An overview of the pseudocode can be seen below:
       </p>
 <pre><code class="plaintext">
 1. for each scratchcard
@@ -209,7 +209,7 @@ def convert(line):
 4.     if num_cards(new_card) already known 
 5.       accumulate to answer
 6.     else
-7.       calcuate num_cards(new_card) and add answer to known
+7.       calculate num_cards(new_card) and add answer to known
 
 </code></pre>
     <p>
@@ -222,15 +222,98 @@ def convert(line):
     <!-- 
       Day 5 solution
     -->
-    <!-- <div class="section" id="day05">
+    <div class="section" id="day05">
       <h2>Day 05</h2>
       <a href="https://adventofcode.com/2023/day/5" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_05.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 is relatively straight forward once the rules of mapping numbers are understood, take the following rule
+      </p>
+        <pre><code class="plaintext">
+50 98 5
+        </code></pre>
+      <p>
+        Here the range in which we can map values is <code>98 - 102</code>, 102 is computed with <code>98 + 5 - 1</code>. This can be visualised with the following:
+      </p>
+      <pre><code class="plaintext">
+98 -> 50
+99 -> 51
+100 -> 52
+101 -> 53
+102 -> 54
+      </code></pre>
+      <p>
+        So any value in the range <code>98 - 102</code> will be converted to the respective destination value. The simplest method to quickly convert from the source to the destination is by subtracting the input value by the difference between the source and destination <code>98 - 50 = 48</code>. Hence the value <code>102</code> can be converted with the following:
+      </p>
+      <pre><code class="plaintext">
+102 - 48 = 54        
+      </code></pre>
+      <p>
+        Applying this method we can parse the mapping rules for each map type, and iteratively convert each input value (initially the seeds) to the new value. This is done by checking if the input value is within the source range and applying our quick conversion trick, if the value is not in any of the source ranges then we don't change it.
+      </p>
+
       <h3><u>Part 2</u></h3>
+      Part 2 is where things get tricky. Here the mapping rules are the same but the input is interpreted as the following:
+      <pre><code class="plaintext">
+79 14 55 13
+     v
+(79 14) & (55 13)
+     v
+[79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92] &
+[55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67]
+      </code></pre>
     </div>
- -->
+    <p>
+      The final two lists are now our inputs, this is manageable for the test data and the same method for part 2 can be applied, but there are just too many values in the input data to map them all.
+    </p>
+    <p>
+      In order to optimise our solution we need to consider the input not as individual values but as ranges. As we can see above the two lists are just ranges, one between <code>79 - 92</code> and another between <code>55 - 67</code>
+    </p>
+    <p>
+      Since the mapping is also done in ranges (the values <code>98 - 102</code> map to <code>50 - 54</code>) we can just keep track of the ranges of our values instead of individual integers. Consider this example:
+    </p>
+    <pre><code class="plaintext">
+input: 99 3
+input range: 99 - 101
+
+does the input range fall into the first map? (98 - 102)
+
+...Yes!
+
+then map the input range to the new input range:
+    (99 - 101) -> (51 - 53)
+    </code></pre>
+    <p>
+      We can see from the example above that instead of mapping each individual value between <strong>99</strong> and <strong>101</strong> we instead mapped the lower and upper bound of the range. Since the problem is asking for the smallest resulting value we will be able to find it in one of the lower bounds!
+    </p>
+    <p>
+      The only thing to consider here is what if the input range doesn't perfectly fit within a map's range? Here we will need to split the input range, mapping the range that falls within the map's boundaries and creating a new range. Again consider the example:
+    </p>
+    <pre><code class="plaintext">
+input: 99 8
+input range: 99 - 106
+
+does the input range fall into the first map? (98 - 102)
+
+...Partially!
+
+then split the range into sections that do and don't fall into the map
+  (99 - 106) -> (99 - 102) & (103 - 106)
+
+now map the section that falls into the range of the map
+  (99 - 102) -> (51 - 54)
+
+now we are left with two ranges:
+  (51 - 54), (103 - 106)
+    </code></pre>
+    <p>
+      Doing this for each map, splitting the input ranges where required and mapping the ranges to new values when possible will lead us to the solution! Some edge cases need to be considered such as if the start or the end of the input overlaps the map, not changing the input range if it doesn't fall into any of the maps, and checking any split off input ranges in case it falls into a different map.
+    </p>
+    <p>
+      Once we have converted the input ranges through each the maps and have our output ranges, we can simply check the smallest value in our ranges, this will be the smallest output that corresponds to one of our inputs!
+    </p>
 
     <!-- 
       Day 6 solution
