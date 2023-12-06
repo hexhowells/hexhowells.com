@@ -50,8 +50,8 @@
       <li><a href="#day03">Day 03</a></li>
       <li><a href="#day04">Day 04</a></li>
       <li><a href="#day05">Day 05</a></li>
-      <!-- <li><a href="#day06">Day 06</a></li>
-      <li><a href="#day07">Day 07</a></li>
+      <li><a href="#day06">Day 06</a></li>
+      <!-- <li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
@@ -318,15 +318,62 @@ now we are left with two ranges:
     <!-- 
       Day 6 solution
     -->
-    <!-- <div class="section" id="day06">
+    <div class="section" id="day06">
       <h2>Day 06</h2>
       <a href="https://adventofcode.com/2023/day/6" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_06.py" target="_blank" rel="noopener noreferrer">Solution</a>
-      <h3><u>Part 1</u></h3>
-      <h3><u>Part 2</u></h3>
+      <p>
+        Both parts of today's puzzle can be solved with brute force since the inputs are not too large and finding the answer is computationally quite light. However there is a more efficient solution which runs in O(1) time.
+      </p>
+      <p>
+        To solve today's puzzle in O(1) time we can use quadratic inequalities. First lets express our problem as a mathematical statement:
+      </p>
+      $$ \large x(t - x) > d $$
+      <p>
+        Where <strong>x</strong> is how long to charge the boat, <strong>t</strong> is how much time we have, and <strong>d</strong> is the best distance that we have to beat. Here we subtract how much time we spend charging the boat with the time available, then with the remaining time we cover <strong>x</strong> distance every second.
+      </p>
+
+      <p>
+        Lets quickly plot the outputs of the first example on the puzzle to visualise that we are dealing with a quadratic.
+      </p>
+
+      <img src="images/aoc-2023/day-6.png" style="width:100%">
+
+      <p>
+        We can see from the plot that by charging the boat for 0 seconds results in the boat going nowhere, same for spending the entire 7 seconds charging the boat. We can see however that the distance we cover is quadratic and there are two points where we cross the boundary for beating the current record (the red line). Any point above the red line beats the current record, so if we can find the critical points (in this case 2 and 5) then we can find the total number of configurations possible to beat the current record.
+
+      <p>
+        To find the critical points we first need to rearrange our equation into the form of a quadratic.
+      </p>
+      $$ \large xt - x^2 > d $$
+      $$ \large xt - x^2 = d $$
+      $$ \large xt - x^2 - d = 0 $$
+      $$ \large -x^2 + xt - d = 0 $$
+      <p>
+        For 
+      </p>
+      <p>
+        Now in this form we can solve for x using the quadratic equation to find our two critical points.
+      </p>
+
+      $$ \large x = \frac{-t \pm \sqrt{t^2-4 \times -1 \times d}}{2\times-1} $$
+
+      <p>
+        Solving for the values <code>t=7</code> <code>d=9</code> gives us the following
+      </p>
+      <pre><code class="plaintext">
+1.697 < x < 5.303
+
+Since x can only be a whole number the possible valid values are:
+[2, 3, 4, 5]
+      </code></pre>
+      <p>
+        And so our answer for that input is 4!
+      </p>
+       
     </div>
- -->
+
 
     <!-- 
       Day 7 solution
