@@ -51,8 +51,8 @@
       <li><a href="#day04">Day 04</a></li>
       <li><a href="#day05">Day 05</a></li>
       <li><a href="#day06">Day 06</a></li>
-      <!-- <li><a href="#day07">Day 07</a></li>
-      <li><a href="#day08">Day 08</a></li>
+      <li><a href="#day07">Day 07</a></li>
+      <!-- <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
       <li><a href="#day11">Day 11</a></li>
@@ -378,15 +378,34 @@ Since x can only be a whole number the possible valid values are:
     <!-- 
       Day 7 solution
     -->
-    <!-- <div class="section" id="day07">
+    < div class="section" id="day07">
       <h2>Day 07</h2>
       <a href="https://adventofcode.com/2023/day/7" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_07.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 is pretty simple just need to implement logic for finding the rank of cards, where a <strong>five of a kind</strong> has the highest rank and <strong>high card</strong> has the lowest. Using this logic along with checking which card is the highest if they have the same rank we can just sort the list with a custom compare function.
+      </p>
+      <p>
+        Find the rank can be done by counting the frequency of each card in a hand. Each hand type will only have one frequency pattern, these are shown below:
+      </p>
+      <pre><code class="plaintext">
+Five of a kind  (e.g. AAAAA)  ->  {A: 5}                          ->  (5)
+Four of a kind  (e.g. A3AAA)  ->  {A: 4, 3: 1}                    ->  (4, 1)
+Full house      (e.g. KK66K)  ->  {K: 3, 6: 2}                    ->  (3, 2)
+Three of a kind (e.g. 4QQ8Q)  ->  {Q: 3, 4: 1, 8: 1}              ->  (3, 1, 1)
+Two pair        (e.g. KK393)  ->  {K: 2, 3: 2, 9: 1}              ->  (2, 2, 1)
+One pair        (e.g. QQ724)  ->  {Q: 2, 7: 1, 2: 1, 4:, 1}       ->  (2, 1, 1, 1)
+High card       (e.g. 5A2Q8)  ->  {5: 1, A: 1, 2: 1, Q: 1, 8: 1}  ->  (1, 1, 1, 1, 1)
+      </code></pre>
+      <p>
+        Using these patterns we can find the rank of each card and use that information to sort them. In the case of a tied rank we just iterate over each card in the hand and check which one has the highest value.
+      </p>
       <h3><u>Part 2</u></h3>
+      For part 2 we just need to convert the jokers (<code>'J'</code>) into whatever card is the most frequent in the hand (excluding the jokers). We can then do the same method as part 1, keeping in mind that the joker will have a lower value during a tie.
     </div>
- -->
+
 
    <!-- 
       Day 8 solution
@@ -422,6 +441,84 @@ Since x can only be a whole number the possible valid values are:
       <a href="https://adventofcode.com/2023/day/10" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_10.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 11 solution
+    -->
+    <!-- <div class="section" id="day11">
+      <h2>Day 11</h2>
+      <a href="https://adventofcode.com/2023/day/11" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_11.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 12 solution
+    -->
+    <!-- <div class="section" id="day12">
+      <h2>Day 12</h2>
+      <a href="https://adventofcode.com/2023/day/12" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_12.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 13 solution
+    -->
+    <!-- <div class="section" id="day13">
+      <h2>Day 13</h2>
+      <a href="https://adventofcode.com/2023/day/13" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_13.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 14 solution
+    -->
+    <!-- <div class="section" id="day14">
+      <h2>Day 14</h2>
+      <a href="https://adventofcode.com/2023/day/14" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_14.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 15 solution
+    -->
+    <!-- <div class="section" id="day15">
+      <h2>Day 15</h2>
+      <a href="https://adventofcode.com/2023/day/15" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_15.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 16 solution
+    -->
+    <!-- <div class="section" id="day16">
+      <h2>Day 16</h2>
+      <a href="https://adventofcode.com/2023/day/16" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_16.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
       <h3><u>Part 2</u></h3>
     </div>
