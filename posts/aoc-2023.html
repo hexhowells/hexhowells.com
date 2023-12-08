@@ -421,7 +421,7 @@ High card       (e.g. 5A2Q8)  ->  {5: 1, A: 1, 2: 1, Q: 1, 8: 1}  ->  (1, 1, 1, 
       </p>
       <h3><u>Part 2</u></h3>
       <p>
-        Using the solution for part 1 to brute force the answer here is too slow. Instead we can notice a pattern, starting from a starting node, it takes the same number of steps to hit a <code>Z</code> node. This can be seen in the example <code>11B</code> hits a <code>Z</code> node every 2 steps and <code>22B</code> hits a <code>Z</code> node every 3 steps.
+        Using the solution for part 1 to brute force the answer here is too slow. Instead we can notice a pattern, starting from a starting node, it takes the same number of steps to hit a <code>Z</code> node. This can be seen in the example <code>11A</code> hits a <code>Z</code> node every 2 steps and <code>22A</code> hits a <code>Z</code> node every 3 steps.
       </p>
       <p>
         Using this pattern we can find how many steps it takes to reach a <code>Z</code> node for each starting node, then get the least common multiple of those numbers to get our answer!
