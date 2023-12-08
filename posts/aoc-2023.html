@@ -52,8 +52,8 @@
       <li><a href="#day05">Day 05</a></li>
       <li><a href="#day06">Day 06</a></li>
       <li><a href="#day07">Day 07</a></li>
-      <!-- <li><a href="#day08">Day 08</a></li>
-      <li><a href="#day09">Day 09</a></li>
+      <li><a href="#day08">Day 08</a></li>
+      <!-- <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
       <li><a href="#day11">Day 11</a></li>
       <li><a href="#day12">Day 12</a></li>
@@ -410,15 +410,24 @@ High card       (e.g. 5A2Q8)  ->  {5: 1, A: 1, 2: 1, Q: 1, 8: 1}  ->  (1, 1, 1, 
    <!-- 
       Day 8 solution
     -->
-    <!-- <div class="section" id="day08">
+    <div class="section" id="day08">
       <h2>Day 08</h2>
       <a href="https://adventofcode.com/2023/day/8" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_08.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Today's problem can be solved quite easily by using a dictionary, storing the current path as the key and the next left/right paths as values. We can then traverse the dictionary using the instructions until we hit <code>ZZZ</code>
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        Using the solution for part 1 to brute force the answer here is too slow. Instead we can notice a pattern, starting from a starting node, it takes the same number of steps to hit a <code>Z</code> node. This can be seen in the example <code>11B</code> hits a <code>Z</code> node every 2 steps and <code>22B</code> hits a <code>Z</code> node every 3 steps.
+      </p>
+      <p>
+        Using this pattern we can find how many steps it takes to reach a <code>Z</code> node for each starting node, then get the least common multiple of those numbers to get our answer!
+      </p>
     </div>
- -->
+
 
    <!-- 
       Day 9 solution
