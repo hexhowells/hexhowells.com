@@ -53,8 +53,8 @@
       <li><a href="#day06">Day 06</a></li>
       <li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
-      <!-- <li><a href="#day09">Day 09</a></li>
-      <li><a href="#day10">Day 10</a></li>
+      <li><a href="#day09">Day 09</a></li>
+      <!-- <li><a href="#day10">Day 10</a></li>
       <li><a href="#day11">Day 11</a></li>
       <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
@@ -432,15 +432,24 @@ High card       (e.g. 5A2Q8)  ->  {5: 1, A: 1, 2: 1, Q: 1, 8: 1}  ->  (1, 1, 1, 
    <!-- 
       Day 9 solution
     -->
-    <!-- <div class="section" id="day09">
+    <div class="section" id="day09">
       <h2>Day 09</h2>
       <a href="https://adventofcode.com/2023/day/9" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_09.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        To find the next item in the sequence we can keep generating a new list consisting of the difference between each pair of values until the sum of the list is 0, keeping track of each new list generated. From there we can go back through the list of diff's adding the previous new value to the last element.
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 can be solved by reversing the input and using the solution for part 1. 
+      </p>
+      <p>
+        There is a slightly more efficient approach that only requires iterating over the inputs once. Here after generating the diff's we compute both the next and previous new digit in the sequence. The previous new digit is computed by subtracting the generated digit from the start of the list.
+      </p>
     </div>
- -->
+
 
    <!-- 
       Day 10 solution
