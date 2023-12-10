@@ -54,8 +54,8 @@
       <li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
-      <!-- <li><a href="#day10">Day 10</a></li>
-      <li><a href="#day11">Day 11</a></li>
+      <li><a href="#day10">Day 10</a></li>
+      <!-- <li><a href="#day11">Day 11</a></li>
       <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
@@ -454,15 +454,140 @@ High card       (e.g. 5A2Q8)  ->  {5: 1, A: 1, 2: 1, Q: 1, 8: 1}  ->  (1, 1, 1, 
    <!-- 
       Day 10 solution
     -->
-    <!-- <div class="section" id="day10">
+    <div class="section" id="day10">
       <h2>Day 10</h2>
       <a href="https://adventofcode.com/2023/day/10" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_10.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 can we solved using breadth-first search, keeping track of the distance. We start at <code>S</code> and search until we have explored all the pipes, every adjacent pipe's distance will just be the distance of the source pipe + 1.
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        For part 2 i decided to explode the grid to twice its size by inserting extra rows and columns between each row and column. Extrapolating the symbols for each row involves looking at the symbol to the left and right, if the left symbol connects to <code>EAST</code> and the right symbol connects to <code>WEST</code> then the new symbol should be <code>-</code> otherwise it should be <code>.</code>. For example:
+      </p>
+      <pre><code class="plaintext">
+-L-J|
+
+Expanding the column creates:
+
+-.L---J.|
+ ^ ^ ^ ^
+
+*new symbols marked with '^'
+      </code></pre>
+      <p>
+        A similar rule can be applied when inserting rows in-between. Now we add <code>|</code> if the above symbol connects to <code>SOUTH</code> and the below symbol connects to <code>NORTH</code>, and add <code>.</code> otherwise.
+      </p>
+      <pre><code class="plaintext">
+L|7||
+-L-J|
+
+Expanding the row creates:
+
+L|7||
+.|.||
+-L-J| 
+      </code></pre>
+      <p>
+        When we do this for the entire grid it will be twice as large and any gaps that we can "squeeze" through now are obvious. For better visualisation see the example from the puzzle:
+      </p>
+      <pre><code class="plaintext">
+Original Grid
+
+..........
+.S------7.
+.|F----7|.
+.||....||.
+.||....||.
+.|L-7F-J|.
+.|..||..|.
+.L--JL--J.
+..........
+
+Expanded Grid
+
+...................
+...................
+..S-------------7..
+..|.............|..
+..|.F---------7.|..
+..|.|.........|.|..
+..|.|.........|.|..
+..|.|.........|.|..
+..|.|.........|.|..
+..|.|.........|.|..
+..|.L---7.F---J.|..
+..|.....|.|.....|..
+..|.....|.|.....|..
+..|.....|.|.....|..
+..L-----J.L-----J..
+...................
+...................
+      </code></pre>
+
+      <p>
+        <strong>NOTE: </strong> before expanding the grid we need to record the starting position of <code>S</code> then convert it into its valid symbol. This can be done by looking at the surrounding symbols and finding two that point into the start symbol.
+      </p>
+      <p>
+        Now that we have a clear view of all the empty space we can use the flood fill algorithm to find all the isolated spaces. Any space that touches the edge of the grid is going to be outside or the loop and are not counted. All the points inside the loop will be stored for later.
+      </p>
+      <p>
+        Before performing the flood fill algorithm we need to clean up the grid. In the above example all the pipes are part of the loop, however for other inputs some of the pipes will not be part of the loop and should be counted as a tile. To resolve this we can use BFS from part 1 to find all the tiles that are part of the loop, any tiles not part of the loop can be converted to <code>.</code>
+      </p>
+      <p>
+        To perform flood fill we can just start at any <code>.</code> tile thats not already part of a flood area and execute flood fill. Performing flood fill on the above example gives us the following (areas touching the edge are marked as <code>O</code>, enclosed areas are marked as <code>I</code>)
+      </p>
+      <pre><code class="plaintext">
+OOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOO
+OOS-------------7OO
+OO|IIIIIIIIIIIII|OO
+OO|IF---------7I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|IL---7OF---JI|OO
+OO|IIIII|O|IIIII|OO
+OO|IIIII|O|IIIII|OO
+OO|IIIII|O|IIIII|OO
+OOL-----JOL-----JOO
+OOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOO
+      </code></pre>
+      <p>
+        We now have all the enclosed tiles! But there is one problem, because we expanded the grid we have extra tiles that shouldn't count and need to be removed from our total. This however is quite simple to resolve, we simply count all tiles marked with <code>I</code> that have even X, Y coordinates.
+      </p>
+      <p>
+        Marking all the <code>I</code> symbols that have even X, Y coordinates with <code>X</code> gives us the following:
+      </p>
+      <pre><code class=plaintext>
+OOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOO
+OOS-------------7OO
+OO|IIIIIIIIIIIII|OO
+OO|IF---------7I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|I|OOOOOOOOO|I|OO
+OO|IL---7OF---JI|OO
+OO|IIIII|O|IIIII|OO
+OO|IXIXI|O|IXIXI|OO
+OO|IIIII|O|IIIII|OO
+OOL-----JOL-----JOO
+OOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOO
+      </code></pre>
+      <p>
+        Now we just count the number of valid tiles (<code>X</code>'s) to get our answer!
+      </p>
     </div>
- -->
+
 
  <!-- 
       Day 11 solution
