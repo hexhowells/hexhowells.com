@@ -55,8 +55,8 @@
       <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
-      <!-- <li><a href="#day11">Day 11</a></li>
-      <li><a href="#day12">Day 12</a></li>
+      <li><a href="#day11">Day 11</a></li>
+      <!-- <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
@@ -592,15 +592,94 @@ OOOOOOOOOOOOOOOOOOO
  <!-- 
       Day 11 solution
     -->
-    <!-- <div class="section" id="day11">
+    <div class="section" id="day11">
       <h2>Day 11</h2>
       <a href="https://adventofcode.com/2023/day/11" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_11.py" target="_blank" rel="noopener noreferrer">Solution</a>
-      <h3><u>Part 1</u></h3>
-      <h3><u>Part 2</u></h3>
+      <p>
+        Both part's of today's problem can be solved with the same solution.
+      </p>
+      <p>
+        Instead of inserting rows into the grid we can just scale the coordinates of the galaxies and compute the distances from there. First we need to find the coordinates of each galaxy in the grid. Given the example grid from the question the galaxies are at the following coordinates:
+      </p>
+      <pre><code class="plaintext">
+...#......
+.......#..
+#.........
+..........
+......#...
+.#........
+.........#
+..........
+.......#..
+#...#.....
+
+Galaxy Coordinates:
+  (0, 3)
+  (1, 7)
+  (2, 0)
+  (4, 6)
+  (5, 1)
+  (6, 9)
+  (8, 7)
+  (9, 0)
+  (9, 4)
+      </code></pre>
+      <p>
+        Next we note the range of coordinates <code>0 - 9</code>, for both the rows and columns we can observe that there are some values that are missing (between the range)
+      </p>
+      <pre><code class="plaintext">
+missing rows  | missing cols
+--------------|-------------
+  3           |   2
+  7           |   5
+              |   8
+      </code></pre>
+      <p>
+        Since these rows and columns have no galaxies they will be the ones we need to expand.
+      </p>
+      <p>
+        To expand the coordinates we can iterate over each coordinate (row, column) and count how many missing rows/columns are behind our coordinate values, we then add an expansion factor to the value for every missing row/column. In other words if the expansion factor is <code>10</code>and  a galaxy is on row <code>8</code> then there are two missing rows behind it (<code>3</code> and <code>7</code>) therefore we need to add <code>20</code> to the row value.
+      </p>
+      <p>
+        Scaling the first few coordinates gives us:
+      </p>
+      <pre><code class="plaintext">
+With expansion value = 10
+
+(0, 3)
+  row value 0 is larger than no missing rows, so don't change it
+  col value 3 is larger than 1 missing columns (2) so add 10
+new coord = (0, 13)
+
+(1, 7)
+  row value 1 is larger than no missing rows, so don't change it
+  col value 7 is larger than 2 missing columns (2, 5) so add 20
+new coord = (1, 27)
+
+.
+.
+.
+
+(9, 4)
+  row value 9 is larger than 2 missing rows (3, 7) so add 20
+  col value 4 is larger than 1 missing columns (2) so add 10
+new coord = (29, 14)
+      </code></pre>
+      <p>
+        With our scaled values we can now iterate over each pair of galaxy coordinates and calculate the minimum distance between them. This is done by getting the absolute difference between the rows and columns and summing the result
+      </p>
+      <pre><code class="plaintext">
+Minimum distance between (1, 27) and (29, 14)
+
+  row distance = |1 - 29| = 28
+  col distance = |27 - 14| = 13
+
+Total distance = (28 + 13) = 41
+      </code></pre>
     </div>
- -->
+
 
  <!-- 
       Day 12 solution
