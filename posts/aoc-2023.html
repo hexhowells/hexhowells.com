@@ -56,8 +56,8 @@
       <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
       <li><a href="#day11">Day 11</a></li>
-      <!-- <li><a href="#day12">Day 12</a></li>
-      <li><a href="#day13">Day 13</a></li>
+      <li><a href="#day12">Day 12</a></li>
+      <!-- <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
@@ -684,15 +684,106 @@ Total distance = (28 + 13) = 41
  <!-- 
       Day 12 solution
     -->
-    <!-- <div class="section" id="day12">
+    <div class="section" id="day12">
       <h2>Day 12</h2>
       <a href="https://adventofcode.com/2023/day/12" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_12.py" target="_blank" rel="noopener noreferrer">Solution</a>
-      <h3><u>Part 1</u></h3>
-      <h3><u>Part 2</u></h3>
+      <p>
+        Today's problem can be solved with recursion and memoisation. Specifically we want to recursively check if sub-strings are valid and accumulate the total number of valid sub-strings found.
+      </p>
+      <p>
+        We can start with an example string from the puzzle description
+      </p>
+      <pre><code class="plaintext">
+?###????????  3,2,1
+      </code></pre>
+      <p>
+        Our first step is to remove all leading <code>.</code> symbols since they don't effect if the string is valid. Then depending on the first symbol (either <code>#</code> or <code>?</code>) we will do different things. Lets first consider if the first symbol is <code>#</code>
+      </p>
+      <p>
+        If the current symbol is <code>#</code> then it will need to be apart of a sequence with a length of the current rule R (<code>3, 2, or 1</code> in the example). We can check if the next R symbols are either <code>#</code> or <code>?</code> (since <code>?</code> can be a <code>#</code>). If the next R symbols are damaged springs followed by an undamaged spring (<code>.</code>) then the rule is valid and we can keep checking the string. 
+      </p>
+      <p>
+        If we have reached the end of the string and no rules remain then we know that configuration of symbols is valid. Else if there are <code>#</code> symbols remaining then we want to check a sub-string with the current sequence of <code>#</code> symbols and rule removed.
+      </p>
+      <pre><code class="plaintext">
+Given the string:
+
+  ##?.#???###  3,2,1
+
+The first symbol is #, therefore we check if the next R=3 symbols are valid
+
+  ##?.#???###  3,2,1
+  ^^^
+
+The next R=3 symbols are valid, check if the following symbol is .
+
+  ##?.#???###  3,2,1
+     ^
+
+Following symbol is . so string is valid thus far. 
+Now remove the valid sub-sequence and rule and continue
+
+  #???###  2,1
+
+Go back to start with new sub-sequence and rules
+      </code></pre>
+
+      <p>
+        Now if the first symbol is <code>?</code> then it does not <strong>need</strong> to be apart of a sequence and could be either <code>#</code> or <code>.</code>. Therefore we want to check how many valid sub-strings there are for both possibilities.
+      </p>
+      <pre><code class="plaintext">
+Given the string:
+
+  ?###????????  3,2,1
+
+The first symbol is ? so count the number of valid sub-strings for both cases
+
+count_valid(.###????????  3,2,1)
+count_valid(####????????  3,2,1)
+            ^
+            |
+    This symbol is changed
+      </code></pre>
+      <p>
+        By recursively accumulating all the valid sub-strings for the initial input string, we should arrive at our answer. There are a few other checks to be made to ensure that the sub-string or rules are not empty.
+      </p>
+      <p>
+        Finally, this recursive solution still isn't quite fast enough, we are checking a lot of sub-strings to get our answer, however many of the sub-strings we check will end up being checked multiple times (especially across different inputs). So in order to speed up our solution further we can use memoisation to record the number of valid sub-strings for a given input string.
+      </p>
+      <p>
+        The following shows the recursive function for finding the number of valid configurations of a given input string. Note the @cache decorator, this will perform memoisation for us (as long as the inputs are hashable).
+      </p>
+      <pre><code class="python">
+@cache
+def num_configs(seq, rules):
+  seq = seq.lstrip('.')
+
+  if len(seq) == 0: 
+    return len(rules) == 0
+
+  if len(rules) == 0: 
+    return seq.count('#') == 0
+
+  if seq[0] == '#':
+    # not enough symbols left or next N symbols contain a '.'
+    if len(seq) < rules[0] or '.' in seq[:rules[0]]:
+      return 0
+    # exactally N symbols remain
+    elif len(seq) == rules[0]: 
+      return len(rules) == 1
+    # A '#' symbol exists after the sequence of len N symbols
+    elif seq[rules[0]] == '#':
+      return 0
+
+    # rules still remain continue
+    return num_configs(seq[rules[0]+1:], rules[1:])
+
+  return num_configs('#' + seq[1:], rules) + num_configs(seq[1:], rules)
+      </code></pre>
     </div>
- -->
+
 
  <!-- 
       Day 13 solution
@@ -741,6 +832,123 @@ Total distance = (28 + 13) = 41
       <a href="https://adventofcode.com/2023/day/16" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_16.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 17 solution
+    -->
+    <!-- <div class="section" id="day17">
+      <h2>Day 17</h2>
+      <a href="https://adventofcode.com/2023/day/17" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_17.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 18 solution
+    -->
+    <!-- <div class="section" id="day18">
+      <h2>Day 18</h2>
+      <a href="https://adventofcode.com/2023/day/18" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_18.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 19 solution
+    -->
+    <!-- <div class="section" id="day19">
+      <h2>Day 19</h2>
+      <a href="https://adventofcode.com/2023/day/19" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_19.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 20 solution
+    -->
+    <!-- <div class="section" id="day20">
+      <h2>Day 20</h2>
+      <a href="https://adventofcode.com/2023/day/20" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_20.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 21 solution
+    -->
+    <!-- <div class="section" id="day21">
+      <h2>Day 21</h2>
+      <a href="https://adventofcode.com/2023/day/21" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_21.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 22 solution
+    -->
+    <!-- <div class="section" id="day22">
+      <h2>Day 22</h2>
+      <a href="https://adventofcode.com/2023/day/22" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_22.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 23 solution
+    -->
+    <!-- <div class="section" id="day23">
+      <h2>Day 23</h2>
+      <a href="https://adventofcode.com/2023/day/23" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_23.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 24 solution
+    -->
+    <!-- <div class="section" id="day24">
+      <h2>Day 24</h2>
+      <a href="https://adventofcode.com/2023/day/24" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_24.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div>
+ -->
+
+ <!-- 
+      Day 25 solution
+    -->
+    <!-- <div class="section" id="day25">
+      <h2>Day 25</h2>
+      <a href="https://adventofcode.com/2023/day/25" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_25.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
       <h3><u>Part 2</u></h3>
     </div>
