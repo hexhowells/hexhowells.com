@@ -58,8 +58,8 @@
       <li><a href="#day11">Day 11</a></li>
       <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
-      <!-- <li><a href="#day14">Day 14</a></li>
-      <li><a href="#day15">Day 15</a></li>
+      <li><a href="#day14">Day 14</a></li>
+      <!-- <li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
@@ -889,15 +889,92 @@ Given the row:
  <!-- 
       Day 14 solution
     -->
-    <!-- <div class="section" id="day14">
+    <div class="section" id="day14">
       <h2>Day 14</h2>
       <a href="https://adventofcode.com/2023/day/14" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_14.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 just requires shifting the round rocks north for each column. Since working with rows is easier in Python i transposed the grid and shifted the rocks for each row.
+      </p>
+      <p>
+        Given the column:
+      </p>
+      <pre><code class="plaintext">
+  O
+  O
+  .
+  O
+  .
+  O
+  .
+  .
+  #
+  #
+
+Transpose:
+
+  ##..O.O.OO
+
+      </code></pre>
+      <p>
+        Going from right to left, if we encounter a <code>O</code> then we check all the symbols to the right of the <code>O</code> until we either hit the end of the row or encounter a non <code>.</code> symbol, we then swap the two symbols.
+      </p>
+      <pre><code class="plaintext">
+Rock found!
+  ##..O...OO
+      ^
+Move to the right until non . symbol is found
+  ##..O...OO
+       ^
+
+  ##..O...OO
+        ^
+
+  ##..O...OO
+         ^
+
+  ##..O...OO
+          ^
+
+Non . symbol found! Swap positions of round rock and last . symbol
+  ##..O...OO
+      ^  ^
+
+  ##.. .. OO
+      O  .
+      ^  ^
+
+  ##.. .. OO
+      .  O
+      ^  ^
+
+  ##.....OOO
+      ^  ^
+
+Rock now shifted!
+
+  ##.....OOO
+      </code></pre>
+      <p>
+        Once we shift the rocks for each row we can re-transpose it so its the correct orientation. Then we can count the number of smooth rocks for each row and multiply by the row index.
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 can be solved using part 1 by rotating the grid then shifting the rocks and repeating for N cycles. However this would take far too long to compute, instead we can look for repeating cycles. Once a repeating cycle is found we will know all the states that the grid will be in, we then just need to figure out which will be the final state.
+      </p>
+      <p>
+        To check for repeating cycles we can store each grid as a string along with the cycle that it was created. Since the same grids repeat every N cycles we can skip most of the cycles and just compute enough to get us the state at cycle=1,000,000,000. This is calculated using the following
+      </p>
+      <pre><code class="plaintext">
+cycles_to_compute = (1,000,000,000 - (cycles_computed) mod (length_of_repeating_cycles)
+      </code></pre>
+      <p>
+        We then perform <code>cycles_to_compute</code> number of cycles to arrive at the final state. Then we can get the answer using the same code as part 1.
+      </p>
     </div>
- -->
+
 
  <!-- 
       Day 15 solution
