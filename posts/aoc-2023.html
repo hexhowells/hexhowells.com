@@ -59,8 +59,8 @@
       <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
-      <!-- <li><a href="#day15">Day 15</a></li>
-      <li><a href="#day16">Day 16</a></li>
+      <li><a href="#day15">Day 15</a></li>
+      <!-- <li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
@@ -979,15 +979,27 @@ cycles_to_compute = (1,000,000,000 - (cycles_computed) mod (length_of_repeating_
  <!-- 
       Day 15 solution
     -->
-    <!-- <div class="section" id="day15">
+    <div class="section" id="day15">
       <h2>Day 15</h2>
       <a href="https://adventofcode.com/2023/day/15" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_15.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 is simple, just follow the rules given to convert each string to a hash value and accumulate. The following one-liner converts a given string <code>s</code> to the hash value
+      </p>
+      <pre><code class="python">
+functools.reduce(lambda v, c: (v + ord(c)) * 17 % 256, s, 0)
+      </code></pre>
       <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 requires us maintain a hashmap of keys (the hashes) and values (the label and focal length). This can be done by maintaining a dictionary of lists. Depending on the instruction (<code>-</code> or <code>=</code>) we will do different operations.
+      </p>
+      <p>
+        For the <code>-</code> operator we need to find the <code>(label, focal length)</code> tuple in the list and remove it. For the <code>=</code> operator we either append a new tuple to the list if the label doesn't exist, otherwise we need to find the tuple with the correct label and update the focal length value.
+      </p>
     </div>
- -->
+
 
  <!-- 
       Day 16 solution
