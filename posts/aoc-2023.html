@@ -61,8 +61,8 @@
       <li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
-      <!-- <li><a href="#day17">Day 17</a></li>
-      <li><a href="#day18">Day 18</a></li>
+      <li><a href="#day17">Day 17</a></li>
+      <!-- <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
       <li><a href="#day20">Day 20</a></li>
       <li><a href="#day21">Day 21</a></li>
@@ -1023,15 +1023,21 @@ functools.reduce(lambda v, c: (v + ord(c)) * 17 % 256, s, 0)
  <!-- 
       Day 17 solution
     -->
-    <!-- <div class="section" id="day17">
+    <div class="section" id="day17">
       <h2>Day 17</h2>
       <a href="https://adventofcode.com/2023/day/17" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_17.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 can be solved using Dijkstra's algorithm to traverse the grid. For every point we keep track of its direction and how many times its moved without changing direction. For each neighbour cell additional checks are performed to ensure that we are not moving more than 3 cells in the same direction and we are not going backwards.
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 is the same as part 1 but applies additional length checks to ensure the distance we move is between <code>4</code> and <code>10</code>. Its important to not check the minimum length requirement until we change direction.
+      </p>
     </div>
- -->
+
 
  <!-- 
       Day 18 solution
