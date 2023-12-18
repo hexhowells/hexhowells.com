@@ -62,8 +62,8 @@
       <li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
-      <!-- <li><a href="#day18">Day 18</a></li>
-      <li><a href="#day19">Day 19</a></li>
+      <li><a href="#day18">Day 18</a></li>
+      <!-- <li><a href="#day19">Day 19</a></li>
       <li><a href="#day20">Day 20</a></li>
       <li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
@@ -1042,15 +1042,49 @@ functools.reduce(lambda v, c: (v + ord(c)) * 17 % 256, s, 0)
  <!-- 
       Day 18 solution
     -->
-    <!-- <div class="section" id="day18">
+    <div class="section" id="day18">
       <h2>Day 18</h2>
       <a href="https://adventofcode.com/2023/day/18" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_18.py" target="_blank" rel="noopener noreferrer">Solution</a>
-      <h3><u>Part 1</u></h3>
-      <h3><u>Part 2</u></h3>
+      <p>
+        Both parts today can be solved using the Shoelace Formula and Pick's Theorem.
+      </p>
+      <p>
+        In order to get the full area of the shape we need to know both the number of cells in the border and the number of cells in the inner area, we can then add these values together to get our answer. Pick's Theorem includes both these values: 
+      </p>
+
+      $$ \large A = I + \frac{B}{2} - 1 $$
+
+      <p>
+        Where:
+      </p>
+      <pre><code class="plaintext">
+A = Area
+I = inner area
+B = border
+      </code></pre>
+
+      <p>
+        We can find the number of cells in the border by following the rules and keeping track of the number of times we moved. Now the two unknowns are <code>A</code> and <code>I</code>. However we can find <code>A</code> using the Shoelace Theorem.
+      </p>
+      <p>
+        So now we can rearrange Pick's Formula for <code>I</code>
+      </p>
+
+      $$ \large I = A - \frac{B}{2} + 1 $$
+
+      <p>
+        Now we can compute the number of cells in the inner area and add it to the number of border cells to get our answer! However a slightly more compact solution is the following:
+      </p>
+
+      $$ \large ANS = A + \frac{B}{2} + 1 $$
+
+      <p>
+        The only thing that changes for part 2 is the directions we move and the number of steps we take for each instruction. However since we are just keeping track of the vertices and adding the steps for each instruction there is no speed difference.
+      </p>
     </div>
- -->
+
 
  <!-- 
       Day 19 solution
