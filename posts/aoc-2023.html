@@ -60,8 +60,8 @@
       <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
-      <!-- <li><a href="#day16">Day 16</a></li>
-      <li><a href="#day17">Day 17</a></li>
+      <li><a href="#day16">Day 16</a></li>
+      <!-- <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
       <li><a href="#day20">Day 20</a></li>
@@ -1004,15 +1004,21 @@ functools.reduce(lambda v, c: (v + ord(c)) * 17 % 256, s, 0)
  <!-- 
       Day 16 solution
     -->
-    <!-- <div class="section" id="day16">
+    <div class="section" id="day16">
       <h2>Day 16</h2>
       <a href="https://adventofcode.com/2023/day/16" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_16.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 requires us to traverse the grid and change direction depending on what symbol we land on and the current direction we are moving. This is done by keeping track of which direction we are currently moving for any square and applying a lot of conditionals.
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 is the same as part 1 but we just trace the path for every edge cell, setting the initial direction according to the edge and ensuring we include overlapping corners.
+      </p>
     </div>
- -->
+
 
  <!-- 
       Day 17 solution
