@@ -63,8 +63,8 @@
       <li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
-      <!-- <li><a href="#day19">Day 19</a></li>
-      <li><a href="#day20">Day 20</a></li>
+      <li><a href="#day19">Day 19</a></li>
+      <!-- <li><a href="#day20">Day 20</a></li>
       <li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
       <li><a href="#day23">Day 23</a></li>
@@ -1089,15 +1089,53 @@ B = border
  <!-- 
       Day 19 solution
     -->
-    <!-- <div class="section" id="day19">
+    <div class="section" id="day19">
       <h2>Day 19</h2>
       <a href="https://adventofcode.com/2023/day/19" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_19.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 is solved by parsing and storing the workflows in a dictionary with the workflow name being the key and the rules being the values. For each part, starting at workflow <code>in</code> check the part with the current rule and either branch to a new rule or fall through to the next rule. When either <code>A</code> or <code>R</code> is reached the part can be marked as either Accepted or Rejected.
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 can not be solved by iterating over each combination of part values since there are too many. Instead we need to determine all the valid input ranges that could result in Approvals. This is done by maintaining a stack of potentially valid input ranges which is updated as we move through the workflows/rules.
+      </p>
+      <p>
+        Start at workflow <code>in</code> and for each rule generate a part that would both pass and fail the rule check, add both to the stack along with the next workflow to jump to (or the next rule to move to if no jump was made). Continue to iterate over the stack, updating and splitting the part values, if a part arrives at <code>A</code> then we know that part range is valid and can be returned. Any part range that arrives at <code>R</code> does not get returned.
+      </p>
+      <p>
+        For example consider the following rule
+      </p>
+      <pre><code class="plaintext">
+part stack:
+  [{x=(1, 4000), m=(1, 4000), a=(1, 4000), s=(1, 4000)}]
+
+First workflow:
+  in{ s < 1351 : px, qqz }
+
+First rule:
+  s < 1351
+
+Two parts can be added to the stack, one that is true for s < 1351 and one that isn't 
+(since neither case immediately results in a rejection so they could both be valid)
+
+-----
+
+part stack:
+  [{x=(1, 4000), m=(1, 4000), a=(1, 4000), s=(1, 1350)}]
+  [{x=(1, 4000), m=(1, 4000), a=(1, 4000), s=(1351, 4000)}]
+
+The first part on the stack is valid for the above rule and jumps to px
+The second part on the stack is invalid for the rule and falls through to qqz
+      </code></pre>
+
+      <p>
+        Once all the valid input ranges are determined we can just compute the number of combinations contained in each part value range and accumulate to get the answer.
+      </p>
     </div>
- -->
+
 
  <!-- 
       Day 20 solution
