@@ -64,8 +64,8 @@
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
-      <!-- <li><a href="#day20">Day 20</a></li>
-      <li><a href="#day21">Day 21</a></li>
+      <li><a href="#day20">Day 20</a></li>
+      <!-- <li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
       <li><a href="#day23">Day 23</a></li>
       <li><a href="#day24">Day 24</a></li>
@@ -1140,15 +1140,40 @@ The second part on the stack is invalid for the rule and falls through to qqz
  <!-- 
       Day 20 solution
     -->
-    <!-- <div class="section" id="day20">
+    <div class="section" id="day20">
       <h2>Day 20</h2>
       <a href="https://adventofcode.com/2023/day/20" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2023/day_20.py" target="_blank" rel="noopener noreferrer">Solution</a>
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 requires the signals to be propagated through the modules until no module's output changes. This is done by maintaining a queue of modules to process. Each module that is processed takes in the input signal, converts it according to its rules, then propagates the output signal to the output modules. The only time a module does not propagate a signal is in the case of a <strong>Flop-Flop</strong> receiving a high pulse.
+      </p>
+      <p>
+        For every signal that gets propagated we keep track of if its a <strong>High</strong> or <strong>Low</strong> signal. At the end of the cycle we will know how many <strong>High</strong> and <strong>Low</strong> Signals were sent.
+      </p>
       <h3><u>Part 2</u></h3>
+      <p>
+        It would take far too many cycles for <code>rx</code> to output a <code>Low</code> pulse. So instead we can look at the input and observe that only 1 module outputs to <code>rx</code>, lets call this module <code>X</code>. Looking at the input further we can see that module <code>X</code> is a <strong>Conjunction</strong> and receives signals from 4 other modules, lets call them <code>a, b, c, d</code>.
+      </p>
+
+      <p>
+        The full visualisation of the modules and how they connect can be seen below (generated using GraphViz). Blue nodes are <strong>Conjunctions</strong> and red nodes are <strong>Flip-Flops</strong>
+      </p>
+
+      <img src="images/aoc-2023/day-20.png" style="width:100%">
+
+      <p>
+        Inspecting the rules of the <strong>Conjunction</strong> module we can notice that it acts the same as a NAND gate, where all inputs must be <strong>High</strong> in order for the output to be <strong>Low</strong>. Since module <code>X</code> directly connects to <code>rx</code> and acts like a NAND gate, <code>rx</code> will send a <strong>Low</strong> signal when all the modules send a <strong>High</strong> signal to module <code>X</code>.
+      </p>
+      <p>
+        If we observe on which cycles modules <code>a, b, c, d</code> send a <strong>High</strong> signal we can spot a repeating pattern. Since the modules of interest send <strong>High</strong> signals every <code>N_m</code> cycles (where <code>m</code> is the module), we need to figure out when these values align (hence all modules will send a <strong>High</strong> signal to module <code>X</code>).
+      </p>
+      <p>
+        This can be done using <strong>LCM</strong>. We need to simulate the circuit and track the signals sent from modules <code>a, b, c, d</code> (the specific modules will depend on your input). When a <strong>High</strong> signal is sent from the module for the first time we record it. Once all modules of interest have sent a <strong>High</strong> signal we use <strong>LCM</strong> to determine the cycle that they all will send a <strong>High</strong> signal, this will be the answer.
+      </p>
     </div>
- -->
+
 
  <!-- 
       Day 21 solution
