@@ -46,8 +46,8 @@
 
     <ul>
       <li><a href="#day01">Day 01</a></li>
-   <!--    <li><a href="#day02">Day 02</a></li>
-      <li><a href="#day03">Day 03</a></li>
+      <li><a href="#day02">Day 02</a></li>
+      <!--<li><a href="#day03">Day 03</a></li>
       <li><a href="#day04">Day 04</a></li>
       <li><a href="#day05">Day 05</a></li>
       <li><a href="#day06">Day 06</a></li>
@@ -112,6 +112,66 @@ def part2(x):
   return sum([l * l2.count(l) for l in l1])
       </code></pre>
     </div>
+
+    <!-- 
+      Day 2 solution
+    -->
+    <div class="section" id="day01">
+      <h2>Day 02</h2>
+      <a href="https://adventofcode.com/2024/day/2" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_02.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p>
+        In the first part we need to check if each line is either <strong>increasing</strong> or <strong>decreasing</strong> and that each difference between each pair of numbers are between 1 and 3. This can be done by checking if each line is equal to the line sorted in either increasing or decreasing order. Checking for differences is pretty straight forward. The following condensed function performs this check:
+      </p>
+      <pre><code class="language-python">
+def safe(n):
+  if (n == sorted(n)) or (n == sorted(n, reverse=True)):
+    return sum( [not(0 < abs(a - b) <= 3) for a, b, in zip(n, n[1:])] ) == 0
+  else:
+    return False
+      </code></pre>
+
+      <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 includes the checking/counting of the first part. However, now if each line doesn't pass the safety check, we need to also check if removing any single integer will cause the pass to check. We can write an additional function to iterate over each subarray where each integer is removed and checked for safety:
+      </p>
+<pre><code class="language-python">
+def check(n):
+  good = 0
+  for i in range(len(n)):
+    good += safe(n[:i] + n[i+1:])
+  return good
+  </code></pre>
+    </div>
+
+    <!-- 
+      Day 3 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div> -->
+
+    <!-- 
+      Day 4 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div> -->
   </div>
   </div>
 </body>
