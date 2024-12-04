@@ -48,8 +48,8 @@
       <li><a href="#day01">Day 01</a></li>
       <li><a href="#day02">Day 02</a></li>
       <li><a href="#day03">Day 03</a></li>
-      <!--<li><a href="#day04">Day 04</a></li>
-      <li><a href="#day05">Day 05</a></li>
+      <li><a href="#day04">Day 04</a></li>
+      <!--<li><a href="#day05">Day 05</a></li>
       <li><a href="#day06">Day 06</a></li>
       <li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
@@ -178,15 +178,22 @@ def check(n):
     <!-- 
       Day 4 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day04">
+      <h2>Day 04</h2>
+      <a href="https://adventofcode.com/2024/day/4" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_04.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <h3><u>Part 2</u></h3>
-    </div> -->
+      <p>
+        For each point on the grid, search out in each direction for the string <code>XMAS</code>. For each match found increment a global counter keeping track of the total number of occurrences of the word. Since I have a custom grid class for handling grids this isn't too difficult.
+      </p>
+
+     <h3><u>Part 2</u></h3>
+     <p>
+       For part 2, I iterated through each point and assumed it was the center of the X. Then find the 4 corners of the X and check each diagonal for either permutation of <code>M</code> and <code>S</code>. If the center contains an <code>A</code> and both diagonals contain <code>M</code> and <code>S</code> then increment a global counter.
+     </p>
+    </div>
 
     <!-- 
       Day 5 solution
