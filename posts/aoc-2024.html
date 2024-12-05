@@ -49,8 +49,8 @@
       <li><a href="#day02">Day 02</a></li>
       <li><a href="#day03">Day 03</a></li>
       <li><a href="#day04">Day 04</a></li>
-      <!--<li><a href="#day05">Day 05</a></li>
-      <li><a href="#day06">Day 06</a></li>
+      <li><a href="#day05">Day 05</a></li>
+      <!--<li><a href="#day06">Day 06</a></li>
       <li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
@@ -198,6 +198,58 @@ def check(n):
     <!-- 
       Day 5 solution
     -->
+    <div class="section" id="day05">
+      <h2>Day 05</h2>
+      <a href="https://adventofcode.com/2024/day/5" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_05.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p>
+        For today's problem, we need to verify that each page in the list is valid according to a list of rules. The rules state that value <code>A</code> must come after value <code>B</code>. This can also be written as value <code>B</code> cannot come before value <code>A</code>. This can be checked by iterating through the elements in the page, and for each element <code>x</code> no values before <code>x</code> appear in a rule involving <code>x</code> as the prior.
+      </p>
+      <p>
+        So looking at the sequence <code>75,97,47,61,53</code>, the page is invalid as the rule <code>97|75</code> implies that <code>75</code> must come after <code>97</code>. 
+      </p>
+      <p>
+        Programmatically, this can be checked by creating a set of all the rules as strings, and for every pair of values, creating a fake rule that would invalidate the page. If that rule actually exists in the rule set, then we know the page is invalid. So for the pair <code>75,97</code> in the sequence, we can create the fake rule <code>97|75</code>, which, if this rule exists in the rule set, would mean this page is invalid.
+      </p>
+      <p>
+        From here, we then check each page and sum the middle value of all pages that are valid.
+      </p>
+      <p>
+        The code for this checking function is below, rules is a set of all the rule strings.
+      </p>
+      <pre><code class="language-python">
+def valid(p, rules):
+  for i in range(1, len(p)):
+    for j in range(i):
+      if f'{p[i]}|{p[j]}' in rules: return False
+    
+  return True
+      </code></pre>
+
+      <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 is pretty simple if we leverage the solution to part 1. Here we can use the same code to check any invalid pairs. If a pair of values <code>(A, B)</code> is invalid, we simply move value <code>B</code> to the left of value <code>A</code>. We do these check and fix operations for each pair of values in the page to fix it (if its invalid). For every page that required fixing, we sum the middle value of the sequence to derive the answer.
+      </p>
+      <p>
+        The following is essentially the same code as above but fixes the page instead of flagging whether the page is valid or not.
+      </p>
+      <pre><code class="language-python">
+def fix(p, rules):
+  for i in range(1, len(p)):
+    for j in range(i):
+      if f'{p[i]}|{p[j]}' in rules:
+        p.insert(j, p.pop(i))
+
+  return p
+      </code></pre>
+    </div>
+
+    <!-- 
+      Day 6 solution
+    -->
     <!-- <div class="section" id="day01">
       <h2>Day 01</h2>
       <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
@@ -209,7 +261,20 @@ def check(n):
     </div> -->
 
     <!-- 
-      Day 6 solution
+      Day 7 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <h3><u>Part 2</u></h3>
+    </div> -->
+
+    <!-- 
+      Day 8 solution
     -->
     <!-- <div class="section" id="day01">
       <h2>Day 01</h2>
