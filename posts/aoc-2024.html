@@ -50,8 +50,8 @@
       <li><a href="#day03">Day 03</a></li>
       <li><a href="#day04">Day 04</a></li>
       <li><a href="#day05">Day 05</a></li>
-      <!--<li><a href="#day06">Day 06</a></li>
-      <li><a href="#day07">Day 07</a></li>
+      <li><a href="#day06">Day 06</a></li>
+      <!--<li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
@@ -250,15 +250,47 @@ def fix(p, rules):
     <!-- 
       Day 6 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day06">
+      <h2>Day 06</h2>
+      <a href="https://adventofcode.com/2024/day/6" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_06.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
+      <p>
+        In order to traverse the grid we need to keep track of the current position and direction of the guard. We then calculate the next position based on the current direction. If the next position is an obstruction then we rotate the direction, if the next position if off the grid then we halt, otherwise we update our current position to the next position.
+      </p>
+      <p>
+        Every movement the guard makes, we maintain the position in a set, returning the length of the set after reaching the edge of the grid gives us our answer!
+      </p>
+
       <h3><u>Part 2</u></h3>
-    </div> -->
+      <p>
+        Part 2 can be done with brute force and some pruning of the search space. The first thing to recognise is that the path of the guard will only be effected if an obstacle is placed somewhere on the original path. If an obstacle is placed anywhere else then the guard will never interact with it.
+      </p>
+      <pre><code class="plaintext">
+<xmp>
+No obstacle placed at a '.' will effect the following path:
+
+...#......
+....>>>>v#
+....^...v.
+..#.^...v.
+..>>^>v#v.
+..^.^.v.v.
+.#^<^<<<<.
+.>>>>>vv#.
+#^<<<<<v..
+......#v..
+</xmp>
+      </code></pre>
+      <p>
+        So for every position on the grid that is apart of the original path (excluding the starting position), we can place an obstacle and check for loops.
+      </p>
+      <p>
+        We check for loops by following the new path and keeping track of all the positions <strong>and</strong> directions we have been in. If at any point we end up in a position <strong>and</strong> direction that we've already seen before, then we're in a loop. Otherwise we will eventually terminate at the edge of the grid. Counting all the positions where a loop occurs if we place a new obstacle gives us the answer to part 2!
+      </p>
+    </div>
 
     <!-- 
       Day 7 solution
