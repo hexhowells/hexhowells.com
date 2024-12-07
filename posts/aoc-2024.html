@@ -51,8 +51,8 @@
       <li><a href="#day04">Day 04</a></li>
       <li><a href="#day05">Day 05</a></li>
       <li><a href="#day06">Day 06</a></li>
-      <!--<li><a href="#day07">Day 07</a></li>
-      <li><a href="#day08">Day 08</a></li>
+      <li><a href="#day07">Day 07</a></li>
+      <!--<li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
       <li><a href="#day11">Day 11</a></li>
@@ -295,15 +295,65 @@ No obstacle placed at a '.' will effect the following path:
     <!-- 
       Day 7 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day07">
+      <h2>Day 07</h2>
+      <a href="https://adventofcode.com/2024/day/7" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_07.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
+      <p>
+        Part 1 can be solved using brute force by iterating over each possible combination of operators. Operators can be defined using lambda functions and all possible combinations can be created using <code>itertools.combinations</code> over the lambda functions.
+      </p>
+      <pre><code class="language-python">
+add = lambda a, b: a + b
+mul = lambda a, b: a * b
+      </code></pre>
+
       <h3><u>Part 2</u></h3>
-    </div> -->
+      <p>
+        Part 2 can be solved via the same method of brute force but adding in a pipe operator. 
+      </p>
+      <pre><code class="language-python">
+add = lambda a, b: a + b
+pipe = lambda a, b: int(str(a) + str(b))
+      </code></pre>
+      <p>
+        A slight optimisation is to compute part 1 and 2 together. Checking for combinations of the <code>+</code> and <code>*</code> symbols first, then only if that isn't valid, checking with the <code>||</code> operator for part 2. The solution described runs in about 30 seconds.
+      </p>
+      <pre><code class="language-python">
+for test_value, ops in input_data:
+  if check(test_value, ops, [add, mul]):
+    p1 += test_value
+    p2 += test_value
+  elif check(test_value, ops, [add, mul, pipe]):
+    p2 += test_value
+      </code></pre>
+      <br>
+      <p>
+        To further improve this solution, we can iterate over all possible combinations using recursion. Here we can recursively check each combination of operators starting from left to right. Since the operators accumulate the values from left to right, recursion maintains the accumulator so it doesn't get re-computed for each possible combination.
+      </p>
+      <p>
+        In the below example, <code>a + b</code> and <code>a * b</code> are computed twice using a pure brute force approach where expressions are fully evaluated each time.
+      </p>
+      <pre><code class="plaintext">
+a + b + c
+a + b * c
+a * b + c
+a * b * c
+      </code></pre>
+      <p>
+        But using recursion we compute the first pair of values with a given operator, then given that value as the accumulator, recursively check each possible operator for the accumulator and the next value. Thus we only had to compute the first pair of values once for a given operator. This optimisation holds true for each accumulated pair of values at each depth in the recursion.
+      </p>
+      <pre><code class="plaintext">
+checking a + b
+  + c
+  * c
+checking a * b
+  + c
+  * c
+      </code></pre>
+    </div>
 
     <!-- 
       Day 8 solution
@@ -315,7 +365,42 @@ No obstacle placed at a '.' will effect the following path:
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
+      <p></p>
+
       <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 9 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 10 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
     </div> -->
   </div>
   </div>
