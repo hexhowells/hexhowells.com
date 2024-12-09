@@ -53,8 +53,8 @@
       <li><a href="#day06">Day 06</a></li>
       <li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
-      <!--<li><a href="#day09">Day 09</a></li>
-      <li><a href="#day10">Day 10</a></li>
+      <li><a href="#day09">Day 09</a></li>
+      <!--<li><a href="#day10">Day 10</a></li>
       <li><a href="#day11">Day 11</a></li>
       <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
@@ -64,8 +64,8 @@
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
-      <li><a href="#day20">Day 20</a></li> -->
-      <!-- <li><a href="#day21">Day 21</a></li>
+      <li><a href="#day20">Day 20</a></li>
+      <li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
       <li><a href="#day23">Day 23</a></li>
       <li><a href="#day24">Day 24</a></li>
@@ -512,6 +512,93 @@ Invalid antinode! Outside of grid.
     <!-- 
       Day 9 solution
     -->
+    <div class="section" id="day09">
+      <h2>Day 09</h2>
+      <a href="https://adventofcode.com/2024/day/9" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_09.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p>
+        In part 1 we can expand out the disk map into blocks. We can then solve this part using the two-pointer technique. Here we maintain two pointers at either end of the array of blocks. The left pointer increments along the array, if it encounters an empty block (<code>.</code>), then we decrement the right pointer until we reach a file block, we then swap the two values. We continue doing this until the two pointers meet, at which point we have moved all the files back.
+      </p>
+      <p>
+        We can then compute the checksum by following the rules in the puzzle.
+      </p>
+
+      <h3><u>Part 2</u></h3>
+      <p>
+        Part 2 is more tricky since we have to move entire files consisting of multiple blocks. Thus instead of expanding out the disk map, we instead maintain a tuple consisting of the file ID (of blank space) and how many blocks it's made up of. So the following expanded disk map:
+      </p>
+      <pre><code class="plaintext">
+0..111....22222
+      </code></pre>
+      <p>
+        Will look like the following:
+      </p>
+      <pre><code class="plaintext">
+(0, 1), ('.', 2), (1, 3), ('.', 4), (2, 5)
+      </code></pre>
+      <p>
+        Then going from right to left, we try to move the file into an available empty space. This is done by checking the filesize (in blocks) and comparing to each empty space left to right. If we encounter an empty space that can fit the file, there are two possible outcomes:
+      </p>
+      <ol>
+        <li>The number of blocks in the file and empty space match, so we move the file into where the empty space was and replace the original file location with an empty space id <code>'.'</code></li>
+        <li>The file size has less blocks in the empty space, so there will be space remaining. In which case we still replace the empty space with the file and replace the original file's ID with an empty space. But we also insert a new empty space file consisting of the <code>number of blocks in the empty space</code> - <code>the number of blocks in the file</code> </li>
+      </ol>
+      <p>
+        The following show an example of moving a file with the same space:
+      </p>
+      <pre><code class="plaintext">
+Moving file (2, 5)
+  (0, 1), ('.', 2), (1, 3), ('.', 4), (2, 2)
+  ^
+  not empty
+
+  (0, 1), ('.', 2), (1, 3), ('.', 4), (2, 2)
+          ^
+          empty! moving...
+
+  (0, 1), (2, 2), (1, 3), ('.', 4), ('.', 2)
+           |                          |
+           L------ swap symbols ------⅃
+      </code></pre>
+      <p>
+        The following show an example of moving a file with space remaining:
+      </p>
+      <pre><code class="plaintext">
+Moving file (2, 5)
+  (0, 1), ('.', 5), (1, 3), ('.', 4), (2, 2)
+  ^
+  not empty
+
+  (0, 1), ('.', 5), (1, 3), ('.', 4), (2, 2)
+          ^
+          empty! moving...
+
+              Γ---<--- move chunks ---<---⅂
+              v                           ^
+  (0, 1), (2, 2), (1, 3), ('.', 4), ('.', 2)
+           |                          |
+           L------ swap symbols ------⅃
+
+Remaining empty chunks
+  5 - 2 = 3
+
+Insert empty chunks after file
+  (0, 1), (2, 2), ('.', 5), (1, 3), ('.', 4), ('.', 2)
+                  ^
+                  insert empty chunks
+
+      </code></pre>
+      <p>
+        Once we have gone through the entire list of blocks, we can follow the same rules in part 1 to compute the checksum
+      </p>
+    </div>
+
+    <!-- 
+      Day 10 solution
+    -->
     <!-- <div class="section" id="day01">
       <h2>Day 01</h2>
       <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
@@ -526,7 +613,71 @@ Invalid antinode! Outside of grid.
     </div> -->
 
     <!-- 
-      Day 10 solution
+      Day 11 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 12 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 13 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 14 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 15 solution
     -->
     <!-- <div class="section" id="day01">
       <h2>Day 01</h2>
