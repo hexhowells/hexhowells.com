@@ -54,8 +54,8 @@
       <li><a href="#day07">Day 07</a></li>
       <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
-      <!--<li><a href="#day10">Day 10</a></li>
-      <li><a href="#day11">Day 11</a></li>
+      <li><a href="#day10">Day 10</a></li>
+      <!--<li><a href="#day11">Day 11</a></li>
       <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
@@ -599,18 +599,39 @@ Insert empty chunks after file
     <!-- 
       Day 10 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day10">
+      <h2>Day 10</h2>
+      <a href="https://adventofcode.com/2024/day/10" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_10.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Part 1 can be solved with a search algorithm such as <strong>breadth-first search</strong> or <strong>depth-first search</strong>. Where the termination statement is encountering a <code>9</code> and we only search neighbours that have an increment of 1. The following function implements this using a custom grid function:
+      </p>
+      <pre><code class="language-python">
+def BFS(grid, start):
+  seen = set()
+  q = deque([start])
+  count = 0
+
+  while q:
+    node = q.popleft()
+    if node not in seen:
+      seen.add(node)
+
+      if grid.get(node) == 9: count += 1
+
+      q.extend([n for n in grid.get_neighbour_coords(node) if (grid.get(n) - grid.get(node) == 1)])
+
+  return count
+      </code></pre>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        Part 2 has the same solution as part 1 except we visit nodes we have already visited. So we simply remove the <code>seen</code> variable and conditional.
+      </p>
+    </div>
 
     <!-- 
       Day 11 solution
