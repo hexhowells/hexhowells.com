@@ -55,8 +55,8 @@
       <li><a href="#day08">Day 08</a></li>
       <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
-      <!--<li><a href="#day11">Day 11</a></li>
-      <li><a href="#day12">Day 12</a></li>
+      <li><a href="#day11">Day 11</a></li>
+      <!--<li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
@@ -636,18 +636,63 @@ def BFS(grid, start):
     <!-- 
       Day 11 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day11">
+      <h2>Day 11</h2>
+      <a href="https://adventofcode.com/2024/day/11" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_11.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Part 1 can be solved pretty easily by computing the rules for each number, for 25 iterations.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        For 75 iterations, computing the raw array of numbers becomes infeasible due to exponential growth. Instead we can compute the number of stones using recursion and dynamic programming. Meaning we don't have to store a huge list of numbers. Consider the evolution of a single number as a tree:
+      </p>
+      <pre><code class="plaintext">
+depth 0:          125
+                   |
+depth 1:         253000
+                /      \
+depth 2:      253       0
+               |        |
+depth 3:     512072     1
+            /      \    |
+depth 4:  512      72  2024
+      </code></pre>
+    <p>
+      For any given node on the tree, we can compute how many times it branches (until reaching the given depth), this information can be propagated up the tree to the root node. So we can write a function to recursively go down each branch and compute how many times it's children branch before hitting the depth limit. The following code gives our recursive function:
+      
+    </p>
+    <pre><code class="language-python">
+def blink(stone, depth, lim):
+  if depth == lim:
+    return 1
+
+  if stone == 0:
+    return blink(1, depth+1, lim)
+  elif len(str(stone)) % 2 == 0:
+    stone_str = str(stone)
+    split = len(stone_str) // 2
+
+    left_half = int(stone_str[:split])
+    right_half = int(stone_str[split:])
+
+    return blink(left_half, depth+1, lim) + blink(right_half, depth+1, lim)
+  else:
+    return blink((stone * 2024), depth+1, lim)
+    </code></pre>
+    <p>
+      So if each rule never led to a split stone, then at the terminal node, a 1 would be returned, which would propagate up each parent node until it got to the root. Whenever there is a split, we explore both children and sum their branch counts.
+    </p>
+    <p>
+      This solution is still going to be too slow though. So to speed things up more we can use dynamic programming using memoization to cache the results of each function call. This works since the results of exploring a given node are deterministic. Thus, looking at our example tree above, the number of branches after the node <code>253</code> is <code>2</code>. So now next time we encounter a node with the value <code>253</code> we don't need to explore any more children and can just use our cached answer.
+    </p>
+    <p>
+      This can be done to the above function using the function decorator <code>@cache</code> from the <code>functools</code> standard library. This will cache the result for any given input. Applying memoization to our function will enable it to run in less than a second and give us the answer to part 2!
+    </p>
 
     <!-- 
       Day 12 solution
@@ -699,6 +744,54 @@ def BFS(grid, start):
 
     <!-- 
       Day 15 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 16 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 17 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 18 solution
     -->
     <!-- <div class="section" id="day01">
       <h2>Day 01</h2>
