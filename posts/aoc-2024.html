@@ -57,8 +57,8 @@
       <li><a href="#day09">Day 09</a></li>
       <li><a href="#day10">Day 10</a></li>
       <li><a href="#day11">Day 11</a></li>
-      <!--<li><a href="#day12">Day 12</a></li>
-      <li><a href="#day13">Day 13</a></li>
+      <li><a href="#day12">Day 12</a></li>
+      <!--<li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
@@ -698,18 +698,149 @@ def blink(stone, depth, lim):
     <!-- 
       Day 12 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day12">
+      <h2>Day 12</h2>
+      <a href="https://adventofcode.com/2024/day/12" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_12.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        We can get the coordinates of each garden plot via the <strong>flood fill algorithm</strong>. By iterating over each point, and if that point wasn't already found with flood fill (that plot has already been found), then use flood fill to get all the point of that plot.
+      </p>
+      <p>
+        To compute the perimeter, we iterate over each point in the plot, and count all the edges that don't touch another point in the plot. The sum of the edges for each point in the plot is the perimeter.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        For part 2 instead of trying to find the number of sides of each plot by looking at the points or border, we can instead brute force through all the horizontal and vertical edge pairs. Consider the following:
+      </p>
+      <pre><code class="plaintext">
+AAAAAA
+AAABBA
+AAABBA
+ABBAAA
+ABBAAA
+AAAAAA
+    </code></pre>
+    <p>
+      We can iterate over each pair of vertical edges by iterating over each pair of rows:
+    </p>
+    <pre><code class="plaintext">
+Checking first pair of columns
+
+A <-> AAAAA
+A <-> AABBA
+A <-> AABBA
+A <-> BBAAA
+A <-> BBAAA
+A <-> AAAAA
+    </code></pre>
+    <p>
+      For each pair of points in the columns, we check if <strong>one</strong> of the points belong to a given plot (so the edge is bordering the plot). If the edge is bordering the plot then we have found an edge! To search for continuous edges, we need to keep track of whether the last edge pair was part of the plots edge.
+    </p>
+    <pre><code class="plaintext">
+Checking edges for plot A
+
+  Checking first pair of columns
+
+A <-> AAAAA
+A <-> AABBA
+A <-> AABBA
+A <-> BBAAA
+A <-> BBAAA
+A <-> AAAAA
+
+A <-> AAAAA  <- (A, A) edge contains two A's, so no edge found
+A <-> AABBA
+A <-> AABBA
+A <-> BBAAA
+A <-> BBAAA
+A <-> AAAAA
+
+...
+
+A <-> AAAAA
+A <-> AABBA
+A <-> AABBA
+A <-> BBAAA  <- (A, B) edge pairs contain one A, found edge!
+A <-> BBAAA
+A <-> AAAAA
+
+A <-> AAAAA
+A <-> AABBA
+A <-> AABBA
+A <-> BBAAA  
+A <-> BBAAA  <- (A, B) edge pairs contain one A, but so did 
+A <-> AAAAA            previous edge pair, so no new edge found
+
+A <-> AAAAA
+A <-> AABBA
+A <-> AABBA
+A <-> BBAAA  
+A <-> BBAAA  <- (A, B) edge pairs contain two A's, so end of edge
+A <-> AAAAA
+    </code></pre>
+    <p>
+      Its also important to check for edge pairs that have swapped, see the following example
+    </p>
+<pre><code class="plaintext">
+Checking edges for plot B
+
+  Checking third pair of rows
+
+AAAAAA
+AAABBA
+AAABBA
+^^^^^^
+||||||
+vvvvvv
+ABBAAA
+ABBAAA
+AAAAAA
+
+AAAAAA
+AAABBA
+AAABBA
+|        <- (A, A) edge contains no B's, so no edge found
+ABBAAA
+ABBAAA
+AAAAAA
+
+AAAAAA
+AAABBA
+AAABBA
+ |       <- (A, B) edge contains one B, edge found!
+ABBAAA
+ABBAAA
+AAAAAA
+
+AAAAAA
+AAABBA
+AAABBA
+  |      <- (A, B) edge contains one B, but so did
+ABBAAA             previous edge pair, so no new edge found
+ABBAAA
+AAAAAA
+
+AAAAAA
+AAABBA
+AAABBA
+   |     <- (B, A) edge contains one B, so did
+ABBAAA             previous edge pair, but plot id's
+ABBAAA             swapped, so new edge found!
+AAAAAA
+
+...
+    </code></pre>
+    <p>
+      Continuing this for each plot, and each pair of columns and pair of rows, will give us the total number of edges for each plot.
+    </p>
+    <p>
+      One last caveat is the edges on the border of the grid (since we need to compare a row/column with nothing). This can be solved with some basic logic or by adding a border around the grid.
+    </p>
+    </div>
 
     <!-- 
       Day 13 solution
