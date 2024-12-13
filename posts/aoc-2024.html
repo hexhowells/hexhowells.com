@@ -855,10 +855,10 @@ AAAAAA
       <p>
         Today's puzzle can be represented as the following two equations:
       </p>
-
-      $$ (ax \times A) + (bx \times B) = px $$
-      $$ (ay \times A) + (by \times B) = py $$
-
+      <p>
+        $$ (ax \times A) + (bx \times B) = px $$
+        $$ (ay \times A) + (by \times B) = py $$
+      </p>
       <p>
         Where <code>ax, ay, bx, by</code> are the accumulators for pushing the <code>a</code> and <code>b</code> buttons, <code>px, py</code> are the coordinates of the prize, and <code>A, B</code> are the number of times to push the <code>A</code> and <code>B</code> buttons.
       </p>
@@ -893,6 +893,105 @@ def solve(ax, ay, bx, by, px, py):
       <p>
         In part 2, the prize coordinates are too large to be solved via the brute force method described above. However, our general solution using a SAT solver can be directly applied here by just adding <code>10000000000000</code> to the <code>x</code> and <code>y</code> coordinates of the prize.
       </p>
+
+      <h3><u>Solution via Linear Algebra</u></h3>
+      <p>
+        Both parts of this puzzle can also be solved using linear algebra. We can represent the problem equations above into a matrix representation:
+      </p>
+      <p>
+        $$
+        \begin{bmatrix}
+        a_x & b_x \\
+        a_y & b_y
+        \end{bmatrix}
+        \begin{bmatrix}
+        A \\
+        B
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+        p_x \\
+        p_y
+        \end{bmatrix}
+        $$
+      </p>
+      <p>
+        Solving for <code>X</code>
+      </p>
+      <p>
+        $$
+        \mathbf{X} = \mathbf{M}^{-1} \mathbf{P}
+        $$
+      </p>
+      <p>
+        Where the inverse of <code>M</code> is:
+      </p>
+      <p>
+        $$
+        \mathbf{M}^{-1} =
+        \frac{1}{\text{det}(\mathbf{M})}
+        \begin{bmatrix}
+        b_y & -b_x \\
+        -a_y & a_x
+        \end{bmatrix}
+        $$
+      </p>
+      <p>
+        And the determinant of <code>M</code> is:
+      </p>
+      <p>
+        $$
+        \text{det}(\mathbf{M}) = a_x b_y - a_y b_x
+        $$
+      </p>
+      <p>
+        Putting it all together:
+      </p>
+      <p>
+        $$
+        \mathbf{X} =
+        \begin{bmatrix}
+        A \\
+        B
+        \end{bmatrix}
+        =
+        \frac{1}{\text{det}(\mathbf{M})}
+        \begin{bmatrix}
+        b_y & -b_x \\
+        -a_y & a_x
+        \end{bmatrix}
+        \begin{bmatrix}
+        p_x \\
+        p_y
+        \end{bmatrix}
+        $$
+      </p>
+
+      <p>This can then be broken down into the following two non-matrix equations</p>
+      <p>
+        $$
+        A = \frac{(b_y p_x - b_x p_y)}{\text{det}(\mathbf{M})}
+        $$
+      </p>
+      <p>
+        $$
+        B = \frac{(a_x p_y - a_y p_x)}{\text{det}(\mathbf{M})}
+        $$
+      </p>
+      <p>
+        A solution is valid if both <code>A</code> and <code>B</code> are whole integer values. Putting the above into a function produces:
+      </p>
+       <pre><code class="language-python">
+def solve(ax, ay, bx, by, px, py):
+  det = ax*by - ay*bx
+  A = (by*px - bx*py) / det
+  B = (ax*py - ay*px) / det
+  
+  if int(A) == A and int(B) == B:
+    return int(A), int(B)
+  else:
+    return 0, 0
+      </code></pre>
     </div>
 
     <!-- 
