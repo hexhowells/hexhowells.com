@@ -58,8 +58,8 @@
       <li><a href="#day10">Day 10</a></li>
       <li><a href="#day11">Day 11</a></li>
       <li><a href="#day12">Day 12</a></li>
-      <!--<li><a href="#day13">Day 13</a></li>
-      <li><a href="#day14">Day 14</a></li>
+      <li><a href="#day13">Day 13</a></li>
+      <!--<li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
@@ -845,18 +845,55 @@ AAAAAA
     <!-- 
       Day 13 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day13">
+      <h2>Day 13</h2>
+      <a href="https://adventofcode.com/2024/day/13" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_13.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Today's puzzle can be represented as the following two equations:
+      </p>
+
+      $$ (ax \times A) + (bx \times B) = px $$
+      $$ (ay \times A) + (by \times B) = py $$
+
+      <p>
+        Where <code>ax, ay, bx, by</code> are the accumulators for pushing the <code>a</code> and <code>b</code> buttons, <code>px, py</code> are the coordinates of the prize, and <code>A, B</code> are the number of times to push the <code>A</code> and <code>B</code> buttons.
+      </p>
+      <p>
+        We can solve this part using brute force, by starting at the highest value of <code>B</code> possible (<code>min(px//bx, py//by, 100)</code>), testing <code>A</code> from 0 to <code>inf</code> until either the equations match or go past the prize coordinates. If you overshoot without satisfying the equation, then decrement <code>B</code> until it reaches 0, at that point no solution is found.
+      </p>
+      <p>
+        But there is a more general way to solve this part, using a <strong>SAT solver</strong> such as Python's Z3. Here we can define the two equations above, and the two unknowns (<code>A</code> and <code>B</code>), and then solve. The following function defines the constraints and solves for <code>A</code> and <code>B</code>
+      </p>
+      <pre><code class="language-python">
+from z3 import Solver, Int, sat
+
+def solve(ax, ay, bx, by, px, py):
+  a_pushes = Int('a_pushes')
+  b_pushes = Int('b_pushes')  
+
+  solver = Solver()
+  
+  eq1 = (ax * a_pushes) + (bx * b_pushes) == px
+  eq2 = (ay * a_pushes) + (by * b_pushes) == py
+  
+  solver.add(eq1, eq2)
+  
+  if solver.check() == sat:
+    solution = solver.model()
+    return solution[a_pushes].as_long(), solution[b_pushes].as_long() 
+  
+  return 0, 0
+      </code></pre>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        In part 2, the prize coordinates are too large to be solved via the brute force method described above. However, our general solution using a SAT solver can be directly applied here by just adding <code>10000000000000</code> to the <code>x</code> and <code>y</code> coordinates of the prize.
+      </p>
+    </div>
 
     <!-- 
       Day 14 solution
