@@ -716,7 +716,7 @@ def blink(stone, depth, lim):
       <p>
         For part 2 instead of trying to find the number of sides of each plot by looking at the points or border, we can instead brute force through all the horizontal and vertical edge pairs. Consider the following:
       </p>
-      <pre><code class="plaintext">
+      <pre style="line-height: 1;"><code class="plaintext">
 AAAAAA
 AAABBA
 AAABBA
@@ -727,7 +727,7 @@ AAAAAA
     <p>
       We can iterate over each pair of vertical edges by iterating over each pair of rows:
     </p>
-    <pre><code class="plaintext">
+    <pre style="line-height: 1;"><code class="plaintext">
 Checking first pair of columns
 
 A <-> AAAAA
@@ -740,7 +740,7 @@ A <-> AAAAA
     <p>
       For each pair of points in the columns, we check if <strong>one</strong> of the points belong to a given plot (so the edge is bordering the plot). If the edge is bordering the plot then we have found an edge! To search for continuous edges, we need to keep track of whether the last edge pair was part of the plots edge.
     </p>
-    <pre><code class="plaintext">
+    <pre style="line-height: 1;"><code class="plaintext">
 Checking edges for plot A
 
   Checking first pair of columns
@@ -785,7 +785,7 @@ A <-> AAAAA
     <p>
       Its also important to check for edge pairs that have swapped, see the following example
     </p>
-<pre><code class="plaintext">
+<pre style="line-height: 1;"><code class="plaintext">
 Checking edges for plot B
 
   Checking third pair of rows
