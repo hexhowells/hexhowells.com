@@ -162,7 +162,7 @@ def check(n):
         Both parts of today's puzzle can be solved pretty easy by using regex to extract out the instructions from the corrupted program. Processing the instructions then requires parsing out the integers, multiplying, then summing to get the answer. We can use the following regex to extract out the <code>mul</code> instructions:
       </p>
 
-      <pre><code class="language-plaintext">
+      <pre><code class="plaintext">
         mul\(\d+,\d+\)
       </code></pre>
 
@@ -171,7 +171,7 @@ def check(n):
         Part 2 can be solved by extending out our regex to also extract <code>do()</code> and <code>don't()</code> instructions. We then just maintain a flag containing the state of whether to execute the <code>mul</code> instructions. We can use the following regex to extract all of the instructions needed in part 2:
       </p>
 
-      <pre><code class="language-plaintext">
+      <pre><code class="plaintext">
         mul\(\d+,\d+\)|don't\(\)|do\(\)
       </code></pre>
     </div>
