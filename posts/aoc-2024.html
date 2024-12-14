@@ -59,8 +59,8 @@
       <li><a href="#day11">Day 11</a></li>
       <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
-      <!--<li><a href="#day14">Day 14</a></li>
-      <li><a href="#day15">Day 15</a></li>
+      <li><a href="#day14">Day 14</a></li>
+      <!--<li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
@@ -1000,18 +1000,64 @@ def solve(ax, ay, bx, by, px, py):
     <!-- 
       Day 14 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day14">
+      <h2>Day 14</h2>
+      <a href="https://adventofcode.com/2024/day/14" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_14.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        We can keep track of robots using their coordinates and for each time step increment their coordinates using the velocity values. In order to ensure that the coordinates don't go out of range we can use the <strong>modulo</strong> operator to wrap the value back around to the beginning. So after incrementing in the <code>x</code> axis, we modulo the value with the <strong>width</strong>. After incrementing in the <code>y</code> axis, we modulo the value with the <strong>height</strong>.
+      </p>
+      <p>
+        Counting the number of robots in each quadrant requires a few conditional statements to see if the coordinates go above or below the center x-axis and y-axis lines.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        Without knowing how the tree looks, the best initial solution is to print out the grid for each time step and use our <strong>visual cortex</strong> to find a tree shaped pattern. Doing so we eventually find a tree:
+      </p>
+      <pre style="line-height: 1;"><code class="plaintext">
+#################################
+#...............................#
+#...............................#
+#...............................#
+#...............................#
+#.......................#.......#
+#......................##.......#
+#..................#..###.......#
+#.................##.####.......#
+#.............#..########.......#
+#............##.#########.......#
+#........#..#############.......#
+#.......##.##############.......#
+#......##################.......#
+#.....######################....#
+#....#######################....#
+#.....######################....#
+#......##################.......#
+#.......##.##############.......#
+#........#..#############.......#
+#............##.#########.......#
+#.............#..########.......#
+#.................##.####.......#
+#..................#..###.......#
+#......................##.......#
+#.......................#.......#
+#...............................#
+#...............................#
+#...............................#
+#...............................#
+#################################
+      </code></pre>
+      <p>
+        In order to search for this tree programmatically, we can check for coordinates that form a continuous horizontal line. Specifically a line that spans <code>33</code> robots in width.
+      </p>
+      <p>
+        We can do this by grouping each column coordinate into rows. Then for each row, we sort the column coordinates, then iterate over the list, if two adjacent coordinates in the list are 1 space apart in coordinate space, then we increment a count value, otherwise we reset the count value. If the count value reaches <code>33</code> then we have found our horizontal line and thus our christtmas tree.
+      </p>
+    </div>
 
     <!-- 
       Day 15 solution
