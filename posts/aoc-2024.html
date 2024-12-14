@@ -1016,46 +1016,48 @@ def solve(ax, ay, bx, by, px, py):
 
       <h3><u>Part 2</u></h3>
       <p>
-        Without knowing how the tree looks, the best initial solution is to print out the grid for each time step and use our <strong>visual cortex</strong> to find a tree shaped pattern. Doing so we eventually find a tree:
+        Without knowing how the tree looks, the best initial solution is to print out the grid for each time step and use our <strong>visual cortex</strong> to find a tree shaped pattern. Doing so we eventually find a sub-grid containing a tree:
       </p>
       <pre style="line-height: 1;"><code class="plaintext">
-#################################
-#...............................#
-#...............................#
-#...............................#
-#...............................#
-#.......................#.......#
-#......................##.......#
-#..................#..###.......#
-#.................##.####.......#
-#.............#..########.......#
-#............##.#########.......#
-#........#..#############.......#
-#.......##.##############.......#
-#......##################.......#
-#.....######################....#
-#....#######################....#
-#.....######################....#
-#......##################.......#
-#.......##.##############.......#
-#........#..#############.......#
-#............##.#########.......#
-#.............#..########.......#
-#.................##.####.......#
-#..................#..###.......#
-#......................##.......#
-#.......................#.......#
-#...............................#
-#...............................#
-#...............................#
-#...............................#
-#################################
+###############################
+#.............................#
+#.............................#
+#.............................#
+#.............................#
+#..............#..............#
+#.............###.............#
+#............#####............#
+#...........#######...........#
+#..........#########..........#
+#............#####............#
+#...........#######...........#
+#..........#########..........#
+#.........###########.........#
+#........#############........#
+#..........#########..........#
+#.........###########.........#
+#........#############........#
+#.......###############.......#
+#......#################......#
+#........#############........#
+#.......###############.......#
+#......#################......#
+#.....###################.....#
+#....#####################....#
+#.............###.............#
+#.............###.............#
+#.............###.............#
+#.............................#
+#.............................#
+#.............................#
+#.............................#
+###############################
       </code></pre>
       <p>
-        In order to search for this tree programmatically, we can check for coordinates that form a continuous horizontal line. Specifically a line that spans <code>33</code> robots in width.
+        In order to search for this tree programmatically, we can check for coordinates that form a continuous horizontal line. Specifically a line that spans <code>31</code> robots in width.
       </p>
       <p>
-        We can do this by grouping each column coordinate into rows. Then for each row, we sort the column coordinates, then iterate over the list, if two adjacent coordinates in the list are 1 space apart in coordinate space, then we increment a count value, otherwise we reset the count value. If the count value reaches <code>33</code> then we have found our horizontal line and thus our christtmas tree.
+        We can do this by grouping each column coordinate into rows. Then for each row, we sort the column coordinates, then iterate over the list, if two adjacent coordinates in the list are 1 space apart in coordinate space, then we increment a count value, otherwise we reset the count value. If the count value reaches <code>31</code> then we have found our horizontal line and thus our christtmas tree.
       </p>
     </div>
 
