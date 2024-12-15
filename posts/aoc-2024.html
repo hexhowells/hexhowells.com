@@ -60,8 +60,8 @@
       <li><a href="#day12">Day 12</a></li>
       <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
-      <!--<li><a href="#day15">Day 15</a></li>
-      <li><a href="#day16">Day 16</a></li>
+      <li><a href="#day15">Day 15</a></li>
+      <!--<li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
@@ -1057,25 +1057,54 @@ def solve(ax, ay, bx, by, px, py):
         In order to search for this tree programmatically, we can check for coordinates that form a continuous horizontal line. Specifically a line that spans <code>31</code> robots in width.
       </p>
       <p>
-        We can do this by grouping each column coordinate into rows. Then for each row, we sort the column coordinates, then iterate over the list, if two adjacent coordinates in the list are 1 space apart in coordinate space, then we increment a count value, otherwise we reset the count value. If the count value reaches <code>31</code> then we have found our horizontal line and thus our christtmas tree.
+        We can do this by grouping each column coordinate into rows. Then for each row, we sort the column coordinates, then iterate over the list, if two adjacent coordinates in the list are 1 space apart in coordinate space, then we increment a count value, otherwise we reset the count value. If the count value reaches <code>31</code> then we have found our horizontal line and thus our christmas tree.
       </p>
     </div>
 
     <!-- 
       Day 15 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day15">
+      <h2>Day 15</h2>
+      <a href="https://adventofcode.com/2024/day/15" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_15.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Implementing the logic for most of the movement is pretty simple. If the next position for the robot to move is a <code>.</code> then move, if its a <code>#</code> then don't. Things get more difficult if we encounter a box (<code>O</code>). In order to move boxes we can check the next position past the box, if its empty (<code>.</code>) then we move the box and allow the robot to move. If the next position is another box then we check the position past that, here we need to keep track of which boxes will be removed from the grid and where they will end up (if they can move). If we ever encounter a wall tile, then we don't move anything, including the robot.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+       The logic gets a bit messy for part 2 (at least for my solution). Expanding the grid is simple using Python's <code>translation</code> function on strings. But now we need to keep track of a pair of tiles representing each box.
+      </p>
+      <p>
+        The movement of the robot when not interacting with the box is the same, however if we need to move a box then three different paths of logic were implemented, moving: left, right, up/down. Note that in this implementation the position of the box is always the left tile of the box.
+      </p>
+
+      <h4><strong>Moving Left</strong></h4>
+      <p>
+        If a box is being pushed left, then we take the position of the robot as subtract two from the x-axis, this takes us to the left tile of the box. We can then check the next tile to the left, most of the logic in part 1 applies here, unless we are next to another box. If another box is on the left then we mark the current box to be removed, mark the tile on the left to add the box back in, and check the tile of the next box. However, instead of moving one tile left, we move two to account for the width of the box.
+      </p>
+
+      <h4><strong>Moving Right</strong></h4>
+      <p>
+        Moving right is similar to moving left. However, we need to increment the coordinates of the tile we are checking differently since we are approaching boxes from a different side.
+      </p>
+
+      <h4><strong>Moving Up/Down</strong></h4>
+      <p>
+        Moving up or down is more difficult since the original box can have a knock-on effect, moving various boxes that aren't directly above the original. Here we can implement logic to check the tiles above the left and right side of the box. If both tiles are <code>.</code> then we can move the boxes, if either above tile is a <code>#</code> then nothing moves. If a box is above either/both of the tiles then we need to move them.
+      </p>
+      <p>
+        To move boxes up and down we implement similar logic to left/right. However, instead of moving from one box to another linearly, there is a possibility that boxes branch, where one box moves two at a time. To resolve this, we can store the boxes that need checking in a queue. Whilst the queue is not empty (or until we reach a <code>#</code> tile), we pop from the queue and perform the logical checks described above, continuously keeping track of which boxes need moving (their original and new position).
+      </p>
+      <br>
+      <p>
+        A key point as mentioned earlier, is to always keep track of boxes from their left tile, in order to create some consistency in the code and reduce possible logical errors.
+      </p>
+    </div>
 
     <!-- 
       Day 16 solution
@@ -1111,6 +1140,54 @@ def solve(ax, ay, bx, by, px, py):
 
     <!-- 
       Day 18 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 18 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 19 solution
+    -->
+    <!-- <div class="section" id="day01">
+      <h2>Day 01</h2>
+      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 20 solution
     -->
     <!-- <div class="section" id="day01">
       <h2>Day 01</h2>
