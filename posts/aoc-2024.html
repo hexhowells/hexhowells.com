@@ -61,8 +61,8 @@
       <li><a href="#day13">Day 13</a></li>
       <li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
-      <!--<li><a href="#day16">Day 16</a></li>
-      <li><a href="#day17">Day 17</a></li>
+      <li><a href="#day16">Day 16</a></li>
+      <!--<li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
       <li><a href="#day20">Day 20</a></li>
@@ -1109,18 +1109,28 @@ def solve(ax, ay, bx, by, px, py):
     <!-- 
       Day 16 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day16">
+      <h2>Day 16</h2>
+      <a href="https://adventofcode.com/2024/day/16" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_16.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Part 1 can be solved using <strong>Dijkstra's algorithm</strong>. When getting the neighbours of the current cell, we need to keep track of which direction the neighbour is in and whether that is the same direction as the current cell. If the direction is different then we need to add <code>1000</code> to the distance of that neighbour.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        To solve part 2 we can use a modified <strong>depth first search</strong> to search all paths from the start to the end. We will modify the algorithm by allowing visiting the same node more than once, but to avoid getting stuck in loops, we will terminate a branch if it exceeds the optimal distance (the answer from part 1). For every node added to the stack, we will also keep track of all the nodes that led to that current node for that current branch/path. Every time we reach the end node, we store the path for returning later. Once we have exhausted all paths we count all the unique nodes from all the shortest paths found to get the answer to part 2.
+      </p>
+      <p>
+        The solution above works but is pretty slow since we are exploring all possible paths in the grid with a max distance of <code>part 1 answer</code>. To optimise this solution we can leverage more information gained from part 1 to prune the search space. 
+      </p>
+      <p>
+        Dijkstra's algorithm stores the optimal path between the <code>start</code> and all nodes of interest leading to the <code>end</code>. Thus for every node being explored in our DFS, we can check if the distance exceeds what we know to be the optimal distance for that node. Since if the distance is higher, we know that the current path will never be able to reach the end in the shortest distance required.
+      </p>
+    </div>
 
     <!-- 
       Day 17 solution
