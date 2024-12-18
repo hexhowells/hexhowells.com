@@ -63,8 +63,8 @@
       <li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
-      <!--<li><a href="#day18">Day 18</a></li>
-      <li><a href="#day19">Day 19</a></li>
+      <li><a href="#day18">Day 18</a></li>
+      <!--<li><a href="#day19">Day 19</a></li>
       <li><a href="#day20">Day 20</a></li>
       <li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
@@ -1270,18 +1270,22 @@ stack = [(a, 0) for a in range(8-1, -1, -1)]
     <!-- 
       Day 18 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day18">
+      <h2>Day 18</h2>
+      <a href="https://adventofcode.com/2024/day/18" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_18.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Part 1 of this problem can be solved fairly easily using <strong>Dijkstra's algorithm</strong>, starting from the top corner (0,0) to the bottom corner (70,70). Where each movement adds <code>1</code> to the distance score and the location of the first <code>1024</code> bytes (<code>#</code>) are avoided.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        Since there aren't too many total bytes and we know that the first <code>1024</code> bytes create a valid path. We can simply brute force the solution to get our answer. This is done by incrementally adding a byte location to the grid, and running Dijkstra's algorithm to try and find a valid path. If no path is found then we return the coordinates of the byte. 
+      </p>
+    </div>
 
     <!-- 
       Day 18 solution
