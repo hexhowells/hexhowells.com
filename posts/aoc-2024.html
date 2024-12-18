@@ -62,8 +62,8 @@
       <li><a href="#day14">Day 14</a></li>
       <li><a href="#day15">Day 15</a></li>
       <li><a href="#day16">Day 16</a></li>
-      <!--<li><a href="#day17">Day 17</a></li>
-      <li><a href="#day18">Day 18</a></li>
+      <li><a href="#day17">Day 17</a></li>
+      <!--<li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
       <li><a href="#day20">Day 20</a></li>
       <li><a href="#day21">Day 21</a></li>
@@ -1135,18 +1135,137 @@ def solve(ax, ay, bx, by, px, py):
     <!-- 
       Day 17 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day17">
+      <h2>Day 17</h2>
+      <a href="https://adventofcode.com/2024/day/17" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_17.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Part 1 is fairly simple, we just need to implement the CPU and run the program. This can be broken down into two functions: <code>step</code> and <code>get_combo</code> which runs a single instruction and gets the combo oprand respectively. We can continue to step through the program until we reach a termination state (where the pointer goes out of bounds for either the opcode or oprand).
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        Part 2 gets a bit more tricky. Brute forcing the problem will get us nowhere due to how large the <code>A</code> register will need to be. To solve this part we first need to reverse engineer the program. The following is the decompiled code for <strong>my</strong> puzzle input (yours will be almost the same with some value changes and a few instructions being swapped around).
+      </p>
+      <pre><code class="plaintext">
+_start:
+  bst   A, 8
+  bxl   B, 3
+  cdv   A, B
+  bxc   B, C
+  bxl   B, 3
+  adv   A, B
+  out   B, 8
+  jnz   0
+      </code></pre>
+      <p>
+        Note that the above has realised the combo oprands. First we can note that, for as long as register <code>A</code> isn't empty, the program will execute all the instructions then loop back to the start. So for each loop in the program, we can further break down the operations that are happening:
+      </p>
+      <pre><code class="plaintext">
+B = A % 8
+B = B ^ 3
+C = A >> B
+B = B ^ C
+B = B ^ 3
+A = A >> 3
+out = B % 8
+      </code></pre>
+      <p>
+        Lets break this down step-by-step.
+      </p>
+      <p>
+        The first operation, gets the modulo of 8 (<code>1000</code>) which as explained in the puzzle description, truncates the <code>A</code> register to the lowest 3 bits. So the first step of the program is to get the 3 lowest bits from <code>A</code> and store them in <code>B</code>.
+      </p>
+      <pre><code class="plaintext">
+B = A % 8
+      </code></pre>
+
+      <p>
+        The next couple of instructions ultimately will modify the <strong>B</strong> register.
+      </p>
+      <pre><code class="plaintext">
+B = B ^ 3
+C = A >> B
+B = B ^ C
+B = B ^ 3
+      </code></pre>
+
+      <p>
+        Next we bit-shift <code>A</code> by 3, essentially removing the last 3 bits from the <code>A</code> register
+      </p>
+      <pre><code class="plaintext">
+A = A >> 3
+      </code></pre>
+
+      <p>
+        Finally, we output the last 3 bits of <code>B</code>
+      </p>
+      <pre><code class="plaintext">
+out = B % 8
+      </code></pre>
+      <br>
+      <p>
+        Looking at all this then, we can determine a few things:
+      </p>
+      <ul>
+        <li>The program loops until <code>A</code> is empty</li>
+        <li>The output of each loop is entirely dependant on the value of <code>A</code></li>
+        <li>Each loop mainly operates on the last 3 bits of <code>A</code> (With the exception of the <code>C</code> register</li>
+        <li>After each loop, the last 3 bits of <code>A</code> are removed</li>
+      </ul>
+      <p>
+        So essentially, the <code>A</code> register can be broken down into chunks of 3 (mostly) independent bits. With this and the information that each loop generates a single output, we can calculate how many bits are required to generate an output the length of our program.
+      </p>
+      <p>
+        The input program is <strong>16</strong> 3-bit numbers long. And each 3-bit chunk of <code>A</code> generates a single output. So we will need to have <code>16 * 3 = 48</code> bits in our input to start generating outputs that are the same length as our program. That means there are <code>281474976710656</code> (<code>2^48</code>) possible combinations to search through.
+      </p>
+      <p>
+        Instead of searching through each combination, we can search through blocks of 3-bits at a time. This works since each output depends on a chunk of 3-bits. If we simulate the program with any value of <code>A</code>, we can observe that the last 3 bits of <code>A</code> are used to generate the first value of the output:
+      </p>
+      <pre><code class="plaintext">
+ 1   2   3   4   5   6
+111 111 111 111 111 111
+
+out = [6, 5, 4, 3, 2, 1]
+      </code></pre>
+      <p>
+        So then, to solve this puzzle, we will apply the <strong>backtracking algorithm</strong>. Starting with the first 8 combinations of 3-bit numbers (0-7), running the program, and checking if any of the values generate the last value of the program.
+      </p>
+      <p>
+        Every time we find a value of <code>A</code> that generates a value equal to our program, we will set that 3-bit number in place and begin searching the next 3-bit block. If we find that after searching all 8 combinations of 3-bit numbers doesn't yield the expected output, then we backtrack to the last block of 3-bit numbers and continue our search. The code to do this can be seen below:
+      </p>
+      <pre><code class="language-python">
+# generate the first 8 3-bit numbers
+stack = [(a, 0) for a in range(8-1, -1, -1)]
+  
+  while stack:
+    A, idx = stack.pop()
+
+    # run program on the current A value
+    output = run(program, A)
+
+    # if the output is smaller than expected or
+    # doesn't match the same value as the program
+    # for the current index, then skip
+    if (idx >= len(output)) or (output[-(idx+1)] != program[-(idx+1)]):
+      continue
+
+    # if the current index just checked was at the end of the program,
+    # than the entire program has been generated! return A
+    if idx == len(program) - 1:
+      return A
+    
+    # current value of A is good, but we haven't generated all values yet
+    # so now generate the next 8 3-bit numbers and append them
+    # to the current chunks of 3-bit values tested
+    for next_A in range(8-1, -1, -1):
+      num = f'{A:03b}{next_A:03b}'
+      stack.append( (int(num, 2), idx + 1) )
+      </code></pre>
+    </div>
 
     <!-- 
       Day 18 solution
