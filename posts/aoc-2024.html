@@ -64,8 +64,8 @@
       <li><a href="#day16">Day 16</a></li>
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
-      <!--<li><a href="#day19">Day 19</a></li>
-      <li><a href="#day20">Day 20</a></li>
+      <li><a href="#day19">Day 19</a></li>
+      <!--<li><a href="#day20">Day 20</a></li>
       <li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
       <li><a href="#day23">Day 23</a></li>
@@ -1288,45 +1288,210 @@ stack = [(a, 0) for a in range(8-1, -1, -1)]
     </div>
 
     <!-- 
-      Day 18 solution
-    -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
-       · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
-
-      <h3><u>Part 1</u></h3>
-      <p></p>
-
-      <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
-
-    <!-- 
       Day 19 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <div class="section" id="day19">
+      <h2>Day 19</h2>
+      <a href="https://adventofcode.com/2024/day/19" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_19.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        We can check for valid towel designs by using the <strong>backtracking algorithm</strong>. For each pattern, we check if that pattern matches the beginning of the towel, if it does then we remove the first <code>len(pattern)</code> characters from the towel and start again. We continue this until we either have no characters left to check (in which case its valid) or none of the patterns match with the current beginning of the towel string, in which case we backtrack to before the last prefix truncation. We continue this until we either find a valid pattern combination or exhaust all possibilities. Consider the following example:
+      </p>
+      <pre><code class="plaintext">
+r, wr, b, g, bwu, rb, gb, br
+
+bwurb
+      </code></pre>
+      <p>
+        Performing our backtracking algorithm:
+      </p>
+
+      <pre><code class="plaintext">
+r, wr, b, g, bwu, rb, gb, br
+
+bwurb
+--
+
+(r), wr, b, g, bwu, rb, gb, br
+
+  (b)wurb == r? No, checking next pattern
+
+r, (wr), b, g, bwu, rb, gb, br
+
+  (bw)urb == wr? No, checking next pattern
+
+r, wr, (b), g, bwu, rb, gb, br
+
+  (b)wurb == b? Yes, truncating and starting over
+
+
+(r), wr, b, g, bwu, rb, gb, br
+
+  (w)urb == r? No, checking next pattern
+
+...
+(no valid patterns found for current sub-string, backtracking...)
+...
+
+r, wr, b, (g), bwu, rb, gb, br
+
+  (b)wurb == g? No, checking next pattern
+
+r, wr, b, g, (bwu), rb, gb, br
+
+  (bwu)rb == bwu? Yes, truncating and starting over
+
+...
+
+r, wr, b, g, bwu, (rb), gb, br
+
+  (rb) == rb? Yes, truncating leaves string empty, valid combination found!
+      </code></pre>
+      <p>
+        Below is code implementing this using recursion:
+      </p>
+      <pre><code class="language-python">
+def valid(towel, patterns):
+  if len(towel) == 0:
+    return True
+
+  for p in patterns:
+    if towel.startswith(p):
+      if valid(towel[len(p):], patterns):
+        return True
+
+  return False
+      </code></pre>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        For part 2, we can modify our above function to, instead of returning with the first combination found, keep a count of all combinations found and return the total. That is done with the below code:
+      </p>
+      <pre><code class="language-python">
+def count(towel, patterns):
+  if len(towel) == 0:
+    return 1
+
+  total = 0
+  for p in patterns:
+    if towel.startswith(p):
+      total += count(towel[len(p):], patterns)
+
+  return total
+      </code></pre>
+      <p>
+        Whilst the above function works, it will have to check a whole lot of combinations before returning the final answer. To speed this up, we can leverage the fact that once a sub-string has been processed and number of combinations returned, we don't need to process it again. So we can use <strong>memoization</strong> to store the total number of combinations for a given sub-string. If the total has already been computed then we return that instead of computing it again. Below is the same function with added memoization:
+      </p>
+      <pre><code class="language-python">
+def count(towel, patterns, mem):
+  if len(towel) == 0:
+    return 1
+
+  if towel in mem:
+    return mem[towel]
+
+  total = 0
+  for p in patterns:
+    if towel.startswith(p):
+      total += count(towel[len(p):], patterns, mem)
+
+  mem[towel] = total
+
+  return total
+      </code></pre>
+    </div>
 
     <!-- 
       Day 20 solution
     -->
-    <!-- <div class="section" id="day01">
-      <h2>Day 01</h2>
-      <a href="https://adventofcode.com/2024/day/1" target="_blank" rel="noopener noreferrer">Puzzle</a>
+    <!-- <div class="section" id="day20">
+      <h2>Day 20</h2>
+      <a href="https://adventofcode.com/2024/day/20" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
-      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_01.py" target="_blank" rel="noopener noreferrer">Solution</a>
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_20.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 21 solution
+    -->
+    <!-- <div class="section" id="day21">
+      <h2>Day 21</h2>
+      <a href="https://adventofcode.com/2024/day/21" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_21.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+     <!-- 
+      Day 22 solution
+    -->
+    <!-- <div class="section" id="day22">
+      <h2>Day 22</h2>
+      <a href="https://adventofcode.com/2024/day/22" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_22.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 23 solution
+    -->
+    <!-- <div class="section" id="day23">
+      <h2>Day 23</h2>
+      <a href="https://adventofcode.com/2024/day/23" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_23.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+     <!-- 
+      Day 24 solution
+    -->
+    <!-- <div class="section" id="day24">
+      <h2>Day 24</h2>
+      <a href="https://adventofcode.com/2024/day/24" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_24.py" target="_blank" rel="noopener noreferrer">Solution</a>
+
+      <h3><u>Part 1</u></h3>
+      <p></p>
+
+      <h3><u>Part 2</u></h3>
+      <p></p>
+    </div> -->
+
+    <!-- 
+      Day 25 solution
+    -->
+    <!-- <div class="section" id="day25">
+      <h2>Day 25</h2>
+      <a href="https://adventofcode.com/2024/day/25" target="_blank" rel="noopener noreferrer">Puzzle</a>
+       · 
+      <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_25.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
       <p></p>
