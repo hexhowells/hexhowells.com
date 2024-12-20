@@ -65,8 +65,8 @@
       <li><a href="#day17">Day 17</a></li>
       <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
-      <!--<li><a href="#day20">Day 20</a></li>
-      <li><a href="#day21">Day 21</a></li>
+      <li><a href="#day20">Day 20</a></li>
+      <!--<li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
       <li><a href="#day23">Day 23</a></li>
       <li><a href="#day24">Day 24</a></li>
@@ -1407,18 +1407,47 @@ def count(towel, patterns, mem):
     <!-- 
       Day 20 solution
     -->
-    <!-- <div class="section" id="day20">
+    <div class="section" id="day20">
       <h2>Day 20</h2>
       <a href="https://adventofcode.com/2024/day/20" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_20.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        This puzzle can be solved by recognising that if there were no walls then the shortest distance between any two points is just the <strong>Manhattan distance</strong>. So we first need to get the original path using <strong>Breadth-first search</strong>. Then for every pair of points <code>(a, b)</code> on the path, compute the Manhattan distance between them, if the distance is less than 2 (the number of picoseconds you can phase through walls) then given the cheating constraints, you could get from point <code>a</code> to point <code>b</code> in <code>distance</code> picoseconds. We then need to subtract the normal number of picoseconds it would take to get from point <code>a</code> to point <code>b</code> with the new cheated time to get the time saved between those points. We simply increment a counter for all pair of points producing at least 100 picoseconds of time saved.
+      </p>
+      <p>
+        Which walls we phase through doesn't need to be known directly but can easily be implied since a cheating time of 2 picoseconds only allows us to connect two point with a single wall <code>#</code> between them.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        We can adapt our solution to day 1 to give us the answer to part 2 by simply computing the time saved between all pairs of points on the original path that have a Manhattan distance of at most 20 (compared to at most 2 in part 1). This simple modification is all that's required to solve part 2!
+      </p>
+      <p>
+        The code for both paths can be seen below (<code>BFS</code> is just a general breadth-first search implementation):
+      </p>
+      <pre><code class="language-python">
+def solve(x):
+  grid = aoc.Grid(x)
+  s = grid.find('S')[0]
+  e = grid.find('E')[0]
+
+  path = BFS(grid, s, e)
+
+  p1, p2 = 0, 0
+  for i in range(len(path)-1):
+    for j in range(i+1, len(path)):
+      d = grid.dist(path[i], path[j])
+      if d <= 2:
+        p1 += int(((j-i)-d) >= 100)
+      if d <= 20:
+        p2 += int(((j-i)-d) >= 100)
+
+  return p1, p2
+      </code></pre>
+    </div>
 
     <!-- 
       Day 21 solution
