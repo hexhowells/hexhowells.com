@@ -66,8 +66,8 @@
       <li><a href="#day18">Day 18</a></li>
       <li><a href="#day19">Day 19</a></li>
       <li><a href="#day20">Day 20</a></li>
-      <!--<li><a href="#day21">Day 21</a></li>
-      <li><a href="#day22">Day 22</a></li>
+      <li><a href="#day21">Day 21</a></li>
+      <!--<li><a href="#day22">Day 22</a></li>
       <li><a href="#day23">Day 23</a></li>
       <li><a href="#day24">Day 24</a></li>
       <li><a href="#day25">Day 25</a></li> -->
@@ -1452,18 +1452,124 @@ def solve(x):
     <!-- 
       Day 21 solution
     -->
-    <!-- <div class="section" id="day21">
+    <div class="section" id="day21">
       <h2>Day 21</h2>
       <a href="https://adventofcode.com/2024/day/21" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_21.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        This problem can be broken down by recognising that we need to find optimal paths between each pair of buttons. We can then iterate over the sequences of button presses and expand out each button pair into its respective optimal path.
+      </p>
+      <p>
+        The shortest path between any two points can be found using <strong>Breadth-first search</strong>, where we ensure we don't go over the blank space.
+      </p>
+      <p>
+        For some button pairs, there are various paths of the same length. However, not all paths are created equal. Lets investigate a path for a pair of buttons on the first robot's keypad. The keypad can be seen below:
+      </p>
+      <pre><code class="plaintext">
+    +---+---+
+    | ^ | A |
++---+---+---+
+| < | v | > |
++---+---+---+
+      </code></pre>
+      <p>
+        Lets investigate the paths for the button pair <code>>^</code>. There are two paths with the same optimal distance:
+      </p>
+      <pre><code class="plaintext">
+<^A
+^&lt;A
+
+      </code></pre>
+      <p>
+        We know they both have the same distance as we can check the Manhattan distance between each pair of buttons:
+      </p>
+      <pre><code class="plaintext">
+<^A
+
+<^ = 2
+^A = 1
+      </code></pre>
+      <pre><code class="plaintext">
+^&lt;A
+
+^&lt; = 2
+&lt;A = 1
+      </code></pre>
+      <p>
+        So far it all looks even! However, lets keep going an trace some paths that the second robot will have to execute to push the above button sequence. We will prepend an <code>A</code> to the sequence, since the second robot will have to start there.
+      </p>
+      <pre><code class="plaintext">
+A<^A
+
+A<      <^      ^A
+Av<&lt;A,  A>^A",  A>A"
+      </code></pre>
+      <pre><code class="plaintext">
+A^&lt;A
+
+A^     ^&lt;       &lt;A
+A<&lt;A,  Avv<&lt;A,  A>>>>^^A
+      </code></pre>
+      <p>
+        Now lets compute the Manhattan distances for each pair in each sequence and sum them together to get the total cost of each option:
+      </p>
+      <pre><code class="plaintext">
+A<^A
+
+A<                <^            ^A
+Av, v<, <<, &lt;A    A>, >^, ^A    A>, >A
+3   2   1   4     2   3   2     2   2       = 21
+      </code></pre>
+      <pre><code class="plaintext">
+A^&lt;A
+
+A^        ^&lt;           &lt;A
+A<, &lt;A    Av, v<, &lt;A   A>, >>, >^, ^A
+4   4     3   2   4    2   1   4   21       = 26
+      </code></pre>
+      <p>
+        As we can see, when taking into account the second robot, now the first path (<code><^A</code>) is more optimal!
+      </p>
+      <p>
+        Given all of this then, its not enough to find one path using BFS. Instead, we can apply some brute force and search all possible combinations of optimal paths between two pairs of buttons. The final second-robot button sequence that has the shortest length can then be used to compute the answer to part 1.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        We <strong>could</strong> apply the same solution above to part 2, but with a robot depth of <code>25</code>. However, looking at the input, we can see that it seems to be growing quite large, and for each level of depth we go, we will have to branch more and more to find the most optimal path. Lets do some back of the envelope math.
+      </p>
+      <p>
+        The original sequence is <strong>5</strong> buttons long if we include starting at <code>A</code>. This produces <strong>4</strong> pairs of buttons we need to traverse. Lets be optimistic and assume that each level of button sequences only requires one branch (so one pair of buttons have 2 possible optimal solutions). With this doubling factor each time, we end up with <code>33,554,432</code> branches to check. Considering this is an optimistic estimate, we can assume much worse. Thus we need to improve this solution.
+      </p>
+      <p>
+        The first improvement is to recognise that there are at most <code>11^2 + 5^2 = 146</code> button pairs. So if we can figure out all the optimal paths for each button pair, we can store them in a dictionary. Then for each sequence of button presses, we can decompose it into button pairs (start, end), and use our map to determine the best sequence, instead of calculating it every time with BFS. <strong>Note: I won't go into how to calculate the optimal paths since I did it manually with some trial and error.</strong>
+      </p>
+      <p>
+        However, we have another problem, the final sequence of button presses is going to be quite long. Assume the number of button presses double every time. We will end up with around <code>4^25 = 1,125,899,906,842,624</code> buttons in the sequence.
+      </p>
+      <p>
+        Instead of storing this then, we can store, for each button sequence, how many times each pair of buttons appear. So for the sequence <code>&lt;A^A>^^AvvvA</code>, we would have:
+      </p>
+      <pre><code class="plaintext">
+A^ = 1
+^A = 2
+A> = 1
+>^ = 1
+^^ = 1
+Av = 1
+vv = 1
+vA = 1
+      </code></pre>
+      <p>
+        This way, our <code>Counter</code> only has to store at most <code>146</code> keys (as calculated earlier).
+      </p>
+      <p>
+        Using both of these optimisations, we can solve part 2 in a few milliseconds!
+      </p>
+    </div>
 
      <!-- 
       Day 22 solution
