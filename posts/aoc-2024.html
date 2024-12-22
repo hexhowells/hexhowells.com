@@ -67,8 +67,8 @@
       <li><a href="#day19">Day 19</a></li>
       <li><a href="#day20">Day 20</a></li>
       <li><a href="#day21">Day 21</a></li>
-      <!--<li><a href="#day22">Day 22</a></li>
-      <li><a href="#day23">Day 23</a></li>
+      <li><a href="#day22">Day 22</a></li>
+      <!--<li><a href="#day23">Day 23</a></li>
       <li><a href="#day24">Day 24</a></li>
       <li><a href="#day25">Day 25</a></li> -->
     </ul>
@@ -1574,18 +1574,28 @@ vA = 1
      <!-- 
       Day 22 solution
     -->
-    <!-- <div class="section" id="day22">
+    <div class="section" id="day22">
       <h2>Day 22</h2>
       <a href="https://adventofcode.com/2024/day/22" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_22.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Part 1 jsut requires implementing the logic to evolve each secret in the input. Perform this evolution process <code>2000</code> times and sum to get the answer.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        For part 2, we need to keep track of both the last digit of each secret, but also the changes between each number. For each number in the input, we evolve the secret, then compute and store both the last digit of the secret and the difference between it and the previous digit.
+      </p>
+      <p>
+        Using this sequence of changes and digits, we can then run a sliding window of length <code>n=4</code> over each sequence. For each n=4 window, we'll update a global counter with the window as the key and the sum of all digits associated with that window for each sequence. Once we have iterated over all the sequences of changes, we will have a counter that has all possible n=4 windows and the sum of all the respective digits for that window found in the all the sequences. Getting the largest sum from this counter will give us the answer!
+      </p>
+      <p>
+        Note that, for each sequence, we should only update the counter once for each window found, even if that window occurs again in the sequence with a higher digit.
+      </p>
+    </div>
 
     <!-- 
       Day 23 solution
