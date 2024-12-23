@@ -68,8 +68,8 @@
       <li><a href="#day20">Day 20</a></li>
       <li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
-      <!--<li><a href="#day23">Day 23</a></li>
-      <li><a href="#day24">Day 24</a></li>
+      <li><a href="#day23">Day 23</a></li>
+      <!--<li><a href="#day24">Day 24</a></li>
       <li><a href="#day25">Day 25</a></li> -->
     </ul>
 
@@ -1600,18 +1600,81 @@ vA = 1
     <!-- 
       Day 23 solution
     -->
-    <!-- <div class="section" id="day23">
+    <div class="section" id="day23">
       <h2>Day 23</h2>
       <a href="https://adventofcode.com/2024/day/23" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_23.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        This puzzle involves a <strong>undirected graph</strong>, and for part 1 we are looking for <strong>triangles</strong> in the graph. Which are 3 nodes connected to each other. We can do this naively by iterating over each node <code>n</code> in the graph, then for each connected node <code>nn</code> , iterate over each node connected to <code>nn</code> (<code>nnn</code>). If <code>nnn</code> is also connected to <code>n</code> then add the triangle to a list. Since the input graph is small enough this solution will work fine. One thing to note is that this solution will have duplicates (e.g. <code>a, b, c</code> and <code>b, c, a</code> and ...). To remove these we can just sort each tuple of nodes and make the list into a set.
+      </p>
+      <p>
+        The graph for the example input can be seen below. Edges that belong to a triangle are highlighted in red.
+      </p>
+      <img src="images/aoc-2024/day-23.png" style="width:100%">
+
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        For part 2 we are trying to find <strong>cliques</strong>, which are sub-graphs where all nodes are connected to each other (triangles are just cliques containing 3 nodes). Specifically, we are trying to find <strong>maximal cliques</strong>, which are cliques that are not apart of larger cliques. For example if the nodes <code>a, b, c, d</code> where all connected to each other, forming a clique. Then the nodes <code>a, b, c</code> would also be a clique, but not a maximal one.
+      </p>
+      <p>
+        Brute forcing the solution like in part 1 is going to be too slow. So instead we can use the <strong>Bron-Kerbosch algoritm</strong>  to find all maximal cliques. Then out of all maximal cliques, we can get the one with the most nodes. The pseudocode for Bron-Kerbosch algorithm can be seen below:
+      </p>
+      <pre><code class="plaintext">
+R = current clique
+P = candidate vertices to be added to R
+X = set of vertices already processed
+
+algorithm BronKerbosch(R, P, X) is
+
+    if P and X are both empty then
+        report R as a maximal clique
+
+    for each vertex v in P do
+        BronKerbosch(R ⋃ {v}, P ⋂ N(v), X ⋂ N(v))
+        P := P \ {v}
+        X := X ⋃ {v}
+      </code></pre>
+      <p>
+        The python code to implement this is below, where <code>graph</code> is a dictionary, where the keys are vertices, and the values are the set of all connected vertices to the key.
+      </p>
+      <pre><code class="language-python">
+def bron_kerbosch(r, p, x, graph):
+  maximal_cliques = []
+
+  if not p and not x:
+    maximal_cliques.append(r)
+
+  for v in list(p):
+    maximal_cliques.extend( 
+      bron_kerbosch(r | {v}, p & graph[v], x & graph[v], graph) 
+      )
+    p.remove(v)
+    x.add(v)
+
+  return maximal_cliques
+      </code></pre>
+      <p>
+        The above function will return all maximal cliques. We then need to find the largest one, sort the vertices, and print them to get the answer.
+      </p>
+      <br>
+      <h3><u>Intuition behind the Bron-Kerbosch algoritm</u></h3>
+      <p>
+        In the algorithm, we are recursively iterating over each node in the graph and assuming it belongs to a clique. We add the node to R (our current hypothesised clique), as well as keeping track of the candidate nodes (previous candidates <strong>union</strong> adjacent nodes), and the nodes already seen (previous seen nodes <strong>union</strong> adjacent nodes)
+      </p>
+      <p>
+        If <code>P</code> is empty, that means there are no more vertices left to explore (out of all the adjacent nodes in our hypothesised clique). If <code>X</code> is empty that means there were no vertices left over. 
+      </p>
+      <p>
+        For a given vertex <code>v</code> if we have checked all adjacent vertices then <code>P</code> will be empty. If <code>X</code> is not empty however, then that means there are nodes left over that weren't connected to all the nodes in the sub-graph. 
+      </p>
+      <p>
+        This is because we check every node in the sub-graph via the for loop, and every time we remove that vertex from <code>X</code>, so if <code>X</code> isn't empty there are vertices that aren't apart of the sub-graph. We know which nodes are apart of the sub-graph because for any given vertex <code>v</code> we only check adjacent vertices <code>P</code> that have both (already been found in a previous vertex) and (is an adjacent vertex for the current vertex <code>v</code>).
+      </p>
+    </div>
 
      <!-- 
       Day 24 solution
