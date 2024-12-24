@@ -28,6 +28,32 @@
 
   <script>hljs.highlightAll();</script>
 
+  <style>
+    /* Container to constrain the zoomable image */
+    .image-zoom-container {
+      position: relative;
+      width: 500px; /* Set your desired width */
+      height: 500px; /* Set your desired height */
+      overflow: hidden; /* Hide overflow when the image is zoomed in */
+      border: 1px solid #ccc;
+      margin: auto;
+    }
+
+    /* The image itself */
+    .zoomable-image {
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      transition: transform 0.3s ease; /* Smooth zoom effect */
+      cursor: zoom-in;
+    }
+
+    /* Zoomed-in state */
+    .image-zoom-container:hover .zoomable-image {
+      transform: scale(2); /* Adjust the scale for zoom level */
+      cursor: zoom-out;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -69,8 +95,8 @@
       <li><a href="#day21">Day 21</a></li>
       <li><a href="#day22">Day 22</a></li>
       <li><a href="#day23">Day 23</a></li>
-      <!--<li><a href="#day24">Day 24</a></li>
-      <li><a href="#day25">Day 25</a></li> -->
+      <li><a href="#day24">Day 24</a></li>
+      <!--<li><a href="#day25">Day 25</a></li> -->
     </ul>
 
     <!-- 
@@ -1679,18 +1705,52 @@ def bron_kerbosch(r, p, x, graph):
      <!-- 
       Day 24 solution
     -->
-    <!-- <div class="section" id="day24">
+    <div class="section" id="day24">
       <h2>Day 24</h2>
       <a href="https://adventofcode.com/2024/day/24" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_24.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Part 1 is pretty simple. First we store all of the values in a dictionary, then store all of the instructions in a queue. Then iterate over each instruction (popping left from the queue) and if the output value doesn't exist yet then append it back into the queue and move on to the next instruction.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        Part 2 is more difficult, there are far too many values to iterate over all possible combinations of swaps. Instead we can visualise the operations to try and try to make sense of the circuit:
+      </p>
+      <img src="images/aoc-2024/broken-graph-small.png" style="width:100%" loading="lazy">
+      <p>
+        The original image is quite large and thus slow to load. For the full size image, click <a href="images/aoc-2024/broken-graph.png" target="_blank" rel="noopener noreferrer">here</a>
+      </p>
+      <br>
+      <p>
+        Here the inputs nodes and output nodes have been horizontally aligned. We can see that most of the operations flow straight down, and have a bunch of operations flowing diagonally from the top right to the bottom left.
+      </p>
+      <p>
+        The puzzle helps us out by telling us that this circuit is meant to be implementing an adder. We can assume that the above diagram is implementing a regular full-adder circuit. A normal cull-adder circuit can be seen below:
+      </p>
+      <img src="images/aoc-2024/adder-circuit.png" style="width:100%">
+      <p>
+        Here the adder circuit takes in three inputs <code>a, b, c</code>, where <code>c</code> is the carry bit (overflow from the previous binary addition, if both <code>a</code> and <code>b</code> are <code>1</code>). Essentially then, our circuit is comprised of various adder modules that are only connected to each other via a single carry line, much like a normal binary adding circuit. We can see one of the adder modules if we zoom in on our graph:
+      </p>
+      <img src="images/aoc-2024/adder-graph.png" style="width:100%">
+      <p>
+        Here <code>x01 = a</code>, <code>y01 = b</code>, and <code>mjh = c</code>. The final <strong>XOR</strong> operation is at the bottom of the graph and hence not visible, however the output of <code>rdj</code> and <code>mjh</code> feed into what would be <code>z01</code>. <code>fhf</code> then goes on to be the carry bit for the next adder circuit.
+      </p>
+      <p>
+        Using this knowledge then, we can visually inspect the graph for things that don't look right. Starting at all of the output nodes (nodes starting with a <code>z</code>), we know they should always be an <strong>XOR</strong> operation. However, for my input there are 3 output nodes that are made with either an <strong>AND</strong> or an <strong>OR</strong> operation. Luckily, the two values that need to be swapped are always apart of the same adder module, so a quick inspection reveals an value with an <strong>XOR</strong> operation where there should be either a <strong>AND</strong> or <strong>OR</strong>. Hence, this is the value that needs to be swapped with our corrupted output value.
+      </p>
+      <p>
+        The last pair of corrupted values for my input existed at the top of the graph. The tool used to render this graph has helpfully displayed all <strong>AND</strong> operations at the top, right below the inputs. However, for one value we can see an <strong>XOR</strong> instead. Inspecting that module reveals another value with an <strong>AND</strong> operation where there should be an <strong>XOR</strong>. 
+      </p>
+      <img src="images/aoc-2024/broken-xor.png" style="width:100%">
+      <p>
+        Taking all of these values then, we can sanity check ourselves by swapping the values, then running the same code as part 1. We then simply sort the values that have been swapped and output them as a comma separated string to give us the answer to part 2.
+      </p>
+
+    </div>
 
     <!-- 
       Day 25 solution
