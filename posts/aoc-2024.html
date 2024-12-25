@@ -96,7 +96,7 @@
       <li><a href="#day22">Day 22</a></li>
       <li><a href="#day23">Day 23</a></li>
       <li><a href="#day24">Day 24</a></li>
-      <!--<li><a href="#day25">Day 25</a></li> -->
+      <li><a href="#day25">Day 25</a></li> 
     </ul>
 
     <!-- 
@@ -1755,18 +1755,25 @@ def bron_kerbosch(r, p, x, graph):
     <!-- 
       Day 25 solution
     -->
-    <!-- <div class="section" id="day25">
+    <div class="section" id="day25">
       <h2>Day 25</h2>
       <a href="https://adventofcode.com/2024/day/25" target="_blank" rel="noopener noreferrer">Puzzle</a>
        · 
       <a href="https://github.com/hexhowells/AdventOfCode/blob/main/2024/day_25.py" target="_blank" rel="noopener noreferrer">Solution</a>
 
       <h3><u>Part 1</u></h3>
-      <p></p>
+      <p>
+        Today's puzzle can be solved by first separating the grids into locks and keys. This can be done by checking the top left tile, if its a <code>#</code> symbol then the grid is a lock, otherwise its a key. Next, for each grid, we separate it into columns and count the number of <code>#</code> symbols and subtract by one, this gives us the pin heights for the locks and keys. Then for each pair of lock and key, we compare the pin heights. If any pair of pin heights summed together are greater than 5, then the pairing is invalid. If none of the summed pair of heights are greater than 5, then the pairing is valid.
+      </p>
 
       <h3><u>Part 2</u></h3>
-      <p></p>
-    </div> -->
+      <p>
+        As per usual, there is no part 2 for the last day so that's all for this years Advent of Code.
+      </p>
+      <p>
+        Merry Christmas everybody!
+      </p>
+    </div>
   </div>
   </div>
 </body>
