@@ -1,0 +1,140 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Paths Towards Intelligence</title>
+  <meta name="description" content="HexHowells Blog.">
+  <meta name="author" content="Morgan Howells">
+  <link rel="icon" type="image/x-icon" href="../images/hexlogo.ico">
+
+  <meta property="og:title" content="HexHowells Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.blog.hexhowells.com/">
+  <meta property="og:description" content="HexHowells Blog">
+
+  <link rel="stylesheet" href="../styles.css?v=1.0">
+
+</head>
+
+<body>
+  <div class="blog-header">
+    <div class="title">
+      <h2><a href="https://hexhowells.com/blog.html">HexHowells</a></h2>
+    </div>
+  </div>
+  <div class="content">
+    <h1>Paths Towards Intelligence</h1>
+    <p class="blog-date">Jan 01 2025</p>
+    <br>
+    <p>
+      The grandest problem for humanity to solve is to understand and build intelligence. The brain is the most complex object known to humanity, and with general intelligence we can conceivably solve all (solvable) problems in the universe given enough time and resources.
+    </p>
+    <p>
+      Working towards understanding intelligence is a terminal goal of mine. But before really working on this, one first has to: define the problem and solution, and understand the different paths towards tackling this grand challenge. The latter will be discussed here, but I will first briefly explore what we are trying to understand and what will it look like when we do.
+    </p>
+    <br>
+    <h2>Defining the problem and solution</h2>
+    <p>
+      There are various <a href="https://en.wikipedia.org/wiki/Intelligence#Definitions">definitions of intelligence</a>, with no real consensus on the best way to formally define it. The fuzzy definition of general intelligence is whatever humans have, this is somewhat the idea behind the <a href="https://www.cs.ox.ac.uk/activities/ieg/e-library/sources/t_article.pdf">Turing Test</a> - Assuming all knowledge can be represented through language, then if we cannot discern the difference between a human and AI; they must be equal. A more concrete definition is <strong>the ability to learn from experiences, adapt to new situations, plan and problem solve to manipulate the environment to achieve some goal.</strong>
+    </p>
+    <p>
+      It's also important to note that intelligence is on a spectrum, both humans and cats are intelligent beings, but humans are higher on the ladder. Ultimately the level of human intelligence and beyond is what we are trying to achieve here. Whilst understanding more basic forms of intelligence first will be useful, we will limit the discussion to the understanding and development of human level intelligence.
+    </p>
+    <p>
+      Next we need to know what it means to "understand" intelligence? In order to understand an intelligent system we should ultimately be able to make predictions on how it will behave given an environment and goals. We should also, in some capacity, be able to replicate an intelligent system. This isn't a prerequisite to understanding since the resources required could be inaccessible for current technology (the brain could be <a href="https://mathworld.wolfram.com/ComputationalIrreducibility.html">computationally irreducible</a>). However, assuming there is nothing special going on in the brain besides raw computation, then there is nothing stopping a universal Turing machine from replicating it.
+    </p>
+
+    <br><hr>
+
+    <br>
+    <h2>Paths</h2>
+    <p>
+      In my mind, there are five general paths towards understanding and building intelligence. All will likely work, but may converge on different solutions. Some paths are likely much more challenging than others, and which path is taken will depend on various factors, including what your instrumental goals are towards understanding intelligence (like making money, advancing biology, etc).
+    </p>
+
+    <br>
+    <h2>Replicating the brain</h2>
+    <p>
+      The most direct path is the pure neuroscience approach of completely reverse engineering the brain and creating a computational simulation of it. Fields like cognitive and computational neuroscience are already exploring the fundamental mechanisms of how the brain functions and how they can be modelled. There exist various mathematical models of neurons such as the <a href="https://neuronaldynamics.epfl.ch/online/Ch2.S2.html">Hodgkin-Huxley</a> model, <a href="https://neuronaldynamics.epfl.ch/online/Ch1.S3.html">integrate-and-fire</a> models, <a href="https://en.wikipedia.org/wiki/Cable_theory">cable theory</a>, etc. Which are laying the groundwork for modelling and understanding biological neurons.
+    </p>
+    <p>
+      The primary appeal of this path is its fidelity. Perfectly simulating the human brain would result in a system capable of any task a human can perform. Developing such a model would also advance computational biology and lead to breakthroughs in treating neurological disorders which is a bonus.
+    <p>
+      However, this approach has some clear caveats, mapping the brain at a cellular level is expensive and complex. Even the relatively simple fly connectome has only <a href="https://www.nature.com/immersive/d42859-024-00053-4/index.html">recently been mapped</a>, and it lacks dynamic interaction details. Computationally, simulating biologically accurate neurons is far less efficient than current artificial neural networks. Specialized hardware like ASICs or projects like <a href="https://www.nowpublishers.com/article/BookDetails/9781680836523">SpiNNaker</a> might address these inefficiencies, but the gap remains significant.
+    </p>
+
+    <br>
+    <h2>Neuroscience Inspired Approach</h2>
+    <p>
+      Instead of fully replicating the brain, we could instead draw high-level inspiration from neuroscience. This is the approach of early machine learning models. With work such as perceptrons, Hebbian learning, Boltzman machines, reinforcement learning, spiking neural networks. With <a href="https://github.com/NeuroTorch/NeuroTorch">various</a> <a href="https://snntorch.readthedocs.io/en/latest/">new</a> <a href="https://github.com/norse/norse">libraries</a> being released that implement neuro-inspired algorithms.
+    </p>
+    <p>
+      This approach strikes a balance between being grounded in neuroscience and the existence proof of intelligence that is the brain, and computational efficiency since we don't require biological accuracy. This path can also be iterative, starting with basic high-level models and progressively incorporating more neuroscientific details as required.
+    </p>
+    <p>
+      One challenge is deciding how deeply to explore the brain’s mechanisms. Modern neural networks are based on the idea that <a href="https://en.wikipedia.org/wiki/Hebbian_theory">"neurons that fire together, wire together"</a>. However, this is a very high-level model and is extremely simplified, missing a lot of key mechanisms of neurons. One example of this is that <a href="https://www.science.org/doi/10.1126/science.aax6239">individual neurons can learn to solve the XOR problem</a>, yet artificial perceptions <a href="https://en.wikipedia.org/wiki/Perceptrons_(book)">famously cannot</a>. Whilst this approach does not require atom level precision, it seems further biological inspirations may still be required.
+    </p>
+    <p>
+      Why isn’t this approach more popular? Primarily because neuroscience-inspired models often underperform compared to state-of-the-art machine learning systems on current ML benchmarks or are designed to address fundamentally different objectives. Existing datasets might not align with the kind of modular, abstract components this approach might produce. For example, could the human hippocampus alone solve ImageNet? Likely not, though it’s a crucial component of intelligence.
+    </p>
+
+    <br>
+    <h2>Machine Learning Approach</h2>
+    <p>
+      Back in the 80's, machine learning was an endeavour to create computational models of the brain, applying the approach described above. However, these days the field of machine learning has transitioned to developing models that perform well on datasets and benchmarks, and slowly iterating on these models to gain minor improvements. Without a whole lot of focus on basing these algorithms on the brain. 
+    </p>
+    <p>
+       Methods such as <a href="https://arxiv.org/abs/2006.11239">diffusion models</a> don't have much basis in biology, but they work super well for generating high-quality images from textual prompts. A more general and wildly popular architecture, the transformer, also doesn't have a huge grounding in biology. Instead of moving these architectures towards more neuroscience inspired methods, researchers are focusing more on purely computational improvements, such as <a href="https://blog.eleuther.ai/rotary-embeddings/">better positional encoders</a> to optimise performance. Due top this, I consider this to be a separate approach to the one above.
+    </p>
+    <p>
+      This approach has the benefit of high training and inference speeds, and immediate value in real-world applications. Over the last decade we have made huge improvements in the field, recent LLMs have displayed remarkable performance despite their simplicity in design. 
+    </p>
+    <p>
+      Whilst this lacks biological accuracy, it isn't necessarily a issue since there are likely various ways to create intelligence. However, the further away from the human brain we get, the more we are relying on small incremental improvements to get us there. And if our current approaches are leading us down the wrong path this could result in some major setbacks, all for some incremental improvements in some benchmark.
+    </p>
+
+    <br>
+    <h2>Evolutionary approach</h2>
+    <p>
+      This approach takes a step back from the neuroscience approach. Here, we are still replicating nature, but not the brain, instead replicating the algorithm used to create the brain, evolution. Since evolution took us from single-cell organisms to general purpose intelligence machines, why not just replicate that process? This is plausible in theory, but simulating millions of agents over vast timescales is computationally infeasible. However, we can still take inspiration from evolution.
+    </p>
+    <p>
+      We could potentially apply evolutionary algorithms to the problem of developing structures of neurons that can exhibit complex behaviour. This would still be challenging, but networks such as <a href="https://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf">NEAT</a> already exist which evolve neural network topologies. Due to the <a href="https://evolution.berkeley.edu/bottlenecks-and-founder-effects/">gene bottleneck</a>, evolution learned to create the brain via repeating structures such as <a href="https://en.wikipedia.org/wiki/Cortical_column">cortical columns</a> using a few different neuron types. It is possible that evolutionary algorithms, under similar constraints could develop different neuron types and architectures which could act as a fundamental unit of computation, repeated millions of times to form emergent intelligence.
+    </p>
+    <p>
+      Whilst this distillation of the problem greatly reduces our search space and makes evolutionary approaches potentially feasible. There is still a large search space to cover. Whilst evolutionary algorithms are guided by fitness functions, there is still a lot of stochasticity, with little guidance provided by humans or neuroscience.
+
+    <br>
+    <h2>Symbolic Approach</h2>
+    <p>
+      Popular in the 1950's, this approach involves creating systems based on symbols, axioms, and logical rules. While it offers transparency and interpretability, its rigidity and lack of adaptability have produced limited success thus far. Hybrid approaches such as <a href="https://deepmind.google/discover/blog/alphageometry-an-olympiad-level-ai-system-for-geometry/">AlphaGeometry</a> combine symbolic reasoning with neural networks show that symbolic reasoning does have a place in this exploration when used in conjunction with connectionist ideas.
+    </p>
+    <p>
+      Whilst symbolic approaches will likely play a role in fields such as mathematics, via <a href="https://terrytao.wordpress.com/wp-content/uploads/2024/03/machine-assisted-proof-notices.pdf">machine assisted proofs</a>, I don't see it being robust enough to achieve generality. This is due to the huge amount of axioms required to embed the system with knowledge, which still can be brittle. The lacking ability of symbolic agents to learn new axioms from its environment also greatly restrict its ability to continually learn and develop its intelligence.
+    </p>
+
+    <br>
+    <h2>Choosing a Path</h2>
+    <p>
+      In the path towards intelligence then, which direction is the most promising? Hopefully, they are all explored to some extent, the human race acts as a nice parallelised search algorithm for ideas. But for an individual or small group, refined focus is more essential.
+    </p>
+    <p>
+      Over the months of exploring these paths and speculating on the optimal choice, my belief is that we need to take inspiration from neuroscience, but only look as deep as required. Initially understanding the brain in high-level concepts, and iteratively exploring lower levels until understanding is achieved. This gives us the benefit of staying grounded to the only existence proof of general intelligence we know, whilst being able to explore more computationally efficient and interpretable implementations.
+    </p>
+    <p>
+      Current machine learning research seems to be pointing in the direction of a pure machine learning approach. Not exploring insights from neuroscience, but optimising what we already have. With the advent of the transformer architecture, being a highly capable and general system, many researchers seem reluctant to stray down a different path. It seems difficult to go back to the days in which models perform poorly, but that may be required to explore completely different (but potentially more fruitful) paths. It's important to note that current machine learning systems are amazing, and produce incredible value in various ways, but they may not lead to understanding a general intelligent system. There is also a bit of a divide between the fields of machine learning and neuroscience, an <a href="https://www.thetransmitter.org/neuroai/neuroai-a-field-born-from-the-symbiosis-between-neuroscience-ai/">interdisciplinary collaboration</a> with <a href="https://www.thetransmitter.org/neuroai/what-the-brain-can-teach-artificial-neural-networks/">great potential</a>.
+    </p>
+    <p>
+      There are many issues with understanding general intelligence as of currently. Modern neural networks, whilst impressive, are hard to understand. Even if they did lead to AGI, we may have about as much understanding of them as we do our own brains (though it would be much easier to probe them). There are also issues with benchmarks. Current machine learning datasets are quite limited and don't represent general intelligence. I believe new benchmarks are required, both to test for general intelligence, and to explore the intermediate goals (such as simulating certain cortical regions).
+    </p>
+    <br>
+    <p>
+      I look forward to the explorations of these paths over the coming years to bring humanity one step closer to the ultimate achievement.
+    </p>
+  </div>
+  </div>
+</body>
+</html>
