@@ -345,4 +345,8 @@ figcaption {
   .content {
   	font-size: 12px;
   }
+
+  figcaption {
+	font-size: 9px;
+  }
 }
