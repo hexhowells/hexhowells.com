@@ -1,0 +1,284 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Neural Golfing - MNIST</title>
+  <meta name="description" content="HexHowells Blog.">
+  <meta name="author" content="Morgan Howells">
+  <link rel="icon" type="image/x-icon" href="../images/hexlogo.ico">
+
+  <meta property="og:title" content="HexHowells Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.blog.hexhowells.com/">
+  <meta property="og:description" content="HexHowells Blog">
+
+  <link rel="stylesheet" href="../styles.css?v=1.0">
+
+  <style>
+    .figure-container {
+        display: flex;
+    }
+    .figure {
+        text-align: center;
+        margin: 5px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="blog-header">
+    <div class="title">
+      <h2><a href="https://hexhowells.com/blog.html">HexHowells</a></h2>
+    </div>
+  </div>
+  <div class="content">
+    <h1>Neural Golfing: Getting 98% accuracy on MNIST with 575 parameters</h1>
+    <p class="blog-date">Jan 26 2025</p>
+    <br>
+    <p>
+      Code golfing is a computational challenge where people attempt to solve a certain problem using the fewest bytes of source code. I think the field of AI could benefit from a similar style of challenge, hence neural golfing. The aim of neural golfing is to solve a problem at a certain level of performance using a neural network with the fewest number of parameters.
+    </p>
+    <p>
+      The current direction of AI research usually involves training a huge model on a huge amount of data. Don't get me wrong, this clearly works and produces results with real-world value, but doesn't it just seem inelegant? Much like in code golfing, even trimming a single byte from your solution is good progress, what about a single network weight? 
+      Whilst large models are great, imposing these constraints not only helps us see the limits of how much we can compress neural networks on specific tasks. But also can enable us to think about neural networks in new ways, and the various methods we can apply to try and compress these models. In order to encourage this new endeavour, I created <a href="https://www.neuralgolfing.com">neuralgolfing.com</a> to track different challenges, leaderboards, and eventually a handbook for model compression techniques.
+    </p>
+
+    <br>
+    <h2>Compressing Models: MNIST</h2>
+    <p>
+      As an initial exploration of this new field. I attempted to train the smallest model I could on the <a href="https://yann.lecun.com/exdb/mnist/">MNIST dataset</a>. With the goal of getting an accuracy above 98% on the testing dataset using only the training set to train the model. Pytorch's <a href="https://github.com/pytorch/examples/blob/main/mnist/main.py">MNIST example</a> produces an accuracy of 99% with <code>1,199,882</code> parameters! I think we can do a bit better.
+    </p>
+    <p>
+      I'm aware that MNIST is an old and outdated dataset for anything useful in modern machine learning. But it serves as a fun starting point since it is small enough that training runs take a few minutes and I can iterate on ideas quickly. I plan to extend this in the future and tackle larger problems.
+    </p>
+    <p>
+      Additionally, there are <a href="https://arxiv.org/abs/2210.08277">actual papers</a> that still use MNIST, and compare their model sizes to other models. This blog will show that not only can you produce models that are much smaller, but with better accuracy.
+    </p>
+
+    <br>
+    <h2>Initial Models</h2>
+    <p>
+      Before doing anything fancy, lets try to define some model architectures and train them to see how well we can initially do. The obvious choice of architecture for this dataset is a convolutional neural network. Applying a basic feed forward network not only is sub-par in performance but is pretty inefficient in terms of performance-per-parameter. This is clear when thinking about the data, for starters MNIST images are contained in a 20x20 pixel area, with a 4-pixel border. Because of this border there are <code>384</code> pixels in the input that are always blank and thus useless. Given a hidden layer of <code>100</code> neurons, that results in a whopping <code>38,400</code> useless parameters!
+    </p>
+    <p>
+      With a mixture of conventional wisdom and trial-and-error, I managed to produce a model with <code>1055</code> parameters, with an accuracy of <code>98.06%</code> on the test set. Not a bad result for some hand-crafted models! It took some iterations to achieve this result which I unfortunately didn't document, so I can't go into details of the intermediate models I tested.
+    </p>
+    <p>
+      The model uses a 3 layer CNN. With the following number of kernels per layer: <code>7, 5, 4</code>, and kernel sizes of: <code>4, 3, 3</code>. The model uses the ReLU activation function with max pooling after the first and second convolutional layer as an obvious addition to reduce model size.
+    </p>
+
+    <br>
+    <h2>Hyperparameter Optimisation</h2>
+    <p>
+      The above initial result is great, but trying to reduce the model any further results in accuracies below the target threshold (but sometimes close in the <code>97%</code> range). Maybe we can nudge these smaller models above the target accuracy with a little bit of hyperparameter tuning?
+    </p>
+    <p>
+      We could sit and manually tune the hyperparameters until we get the result we want, or we can turn to automation. There are various automated hyperparameter tuning methods, such as: Grid Search, Bayesian Optimisation, Evolutionary Algorithms, etc.
+    </p>
+    <p>
+      We will restrict this hyperparameter optimisation to just tuning the training parameters and not the model architecture. Since different architectures will have different sizes, so if we tried to find the best architecture with an accuracy above 98%, the optimisation process would converge on larger architectures. We could only check architectures that are below our current best or create some fine-tuned heuristic combining model size and accuracy, but for this blog just focusing on hyperparameters should be enough.
+    </p>
+
+    <p>
+      There are a couple of ways to perform hyperparameter optimisation. Random search will randomly select hyperparameters with no attempt at converging towards the best solution, this is not optimal but good for some initial data points. Grid search will iteratively search through every combination of hyperparameters given a range and step size. This gives some good coverage but can miss values in-between steps. Whilst it can be parallelised (since we are checking every combination), it is pretty inefficient if certain areas of the grid are obviously dead-ends.
+    </p>
+
+    <figure>
+      <img class="blog-img" src="images/neural-golfing/grid-random-search.png">
+      <figcaption>Grid search and random search; accuracy map is random and doesn't represent what the search methods would find.</figcaption>
+    </figure>
+
+    <br>
+    <h3><u>Bayesian Optimisation</u></h3>
+    <p>
+      The most popular choice is Bayesian optimisation. Bayesian optimisation builds a surrogate model of the objective function to predict the performance of a model given a set of hyperparameters. A separate acquisition function uses the surrogate model to sample from the hyperparameter space, balancing exploration and exploitation. With each set of hyperparameters checked, the surrogate model improves its predictions and helps to better guide the acquisition model to chose promising hyperparameters.
+    </p>
+    <p>
+      To conduct hyperparameter optimisation, I used the <a href="https://github.com/optuna/optuna">Optuna</a> library, this enables easy Bayesian optimisation coupled with a UI to track the progress of multiple trials. I optimised each parameter between the following specified ranges:
+    </p>
+    <table><thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Min Value</th>
+        <th>Max Value</th>
+      </tr></thead>
+    <tbody>
+      <tr>
+        <td>Batch size</td>
+        <td>4</td>
+        <td>32</td>
+      </tr>
+      <tr>
+        <td>Learning rate</td>
+        <td>1e-5</td>
+        <td>1e-2</td>
+      </tr>
+      <tr>
+        <td>LR step size</td>
+        <td>1</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td>LR gamma</td>
+        <td>0.1</td>
+        <td>0.99</td>
+      </tr>
+    </tbody>
+    </table>
+    <br>
+    <p>
+      Applying hyperparameter optimisation enabled the model to be reduced several times whilst keeping above the accuracy threshold. Producing a model with <code>807</code> parameters. The main reductions were the first-layer channels, resulting in a model with the following number of convolutional layers: <code>4, 5, 4</code> and kernel sizes: <code>4, 3, 3</code>. This model could get an accuracy of <code>98.16%</code> with the following hyperparameters:
+    </p>
+    <table><thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Final Value</th>
+      </tr></thead>
+    <tbody>
+      <tr>
+        <td>Batch size</td>
+        <td>14</td>
+      </tr>
+      <tr>
+        <td>Learning rate</td>
+        <td>0.0008</td>
+      </tr>
+      <tr>
+        <td>LR step size</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>LR gamma</td>
+        <td>0.62</td>
+      </tr>
+    </tbody>
+    </table>
+
+    <br>
+    <div class="figure-container">
+        <figure class="figure">
+            <img class="blog-img" src="images/neural-golfing/optuna-importance.png">
+            <figcaption>The importance of each hyperparameter</figcaption>
+        </figure>
+        <figure class="figure">
+            <img class="blog-img" src="images/neural-golfing/optuna-parallel.png">
+            <figcaption>Parallel graph of each hyperparameter</figcaption>
+        </figure>
+    </div>
+    <p>
+      Not bad! But now any further reductions in the number of kernels per layer or kernel sizes results in accuracies that can't quite break <code>98%</code> even with hyperparameter tuning. However, we're not done yet.
+    </p>
+
+    <br>
+    <h2>Sparse Neural Networks</h2>
+    <p>
+      If we can't remove entire kernels or neurons without maintaining our <code>>98%</code> accuracy, perhaps we can remove individual weights?
+    </p>
+    <p>
+      Sparse neural networks are a type of neural network where not all neurons between layers are fully connected with weights, whilst maintaining good performance. The <a href="https://arxiv.org/abs/1803.03635">Lottery Ticket Hypothesis</a> posits that within large, dense neural networks, there exists a smaller, sparse subnetwork (called the "winning ticket") that can match/exceed the performance of the original network. There are various methods to achieve sparsity in neural networks, such as: pruning weights post training, sparse initialisation where we start with a sparse network, dynamic sparsity which applies a sparsity pattern during training, etc.
+    </p>
+    <img class="blog-img" src="images/neural-golfing/sparse-network.png">
+    
+    <br><br>
+    <p>
+      For this model, I applied brute force pruning of each weight one-by-one. After a weight was set to zero, I evaluated it against the testing dataset and if the model still achieved an accuracy above <code>98%</code>, the weight remained zero. This was done for every weight in the network. This brute force method is a little computationally intensive and not super effective for larger models but feasible given the size of the model we're working with.
+    </p>
+    <p>
+      After pruning the current best model at <code>807</code> parameters, a total of <code>135</code> parameters were removed. This resulted in a model with <code>672</code> parameters, able to produce a <code>98%</code> accuracy on the MNIST testing dataset. This was possible both from the theory that some of the weights aren't needed, but that the original model was able to produce an accuracy above <code>98%</code>, giving us some tolerance for performance reductions (removing some weights actually improved performance!).
+    </p>
+
+    <br>
+    <h2>PReLU</h2>
+    <p>
+      So a model with <code>672</code> parameters is a pretty nice achievement, but there are still potential improvements to be made. As a final effort, I decided to try different activation functions, specifically replacing ReLU with <a href="https://arxiv.org/abs/1502.01852">Parametric ReLU</a>. A neat thing about this activation function (and most modern activation functions) is that it enables single-layer networks to <a href="https://arxiv.org/abs/2409.10821">solve non-linearly separable functions</a> like the XOR function, a problem <a href="https://en.wikipedia.org/wiki/Perceptron#Perceptrons_(1969)">famously unsolvable</a> for older single-layer networks. This theoretically gives the model much more complexity when processing the input and could help to boost performance. Interestingly, the XOR problem can also be solved with <a href="https://www.science.org/doi/10.1126/science.aax6239">single neurons in the brain</a>.
+    </p>
+    <p>
+      Originally, the best non-pruned model had <code>807</code> parameters and took 18 epochs to reach an accuracy of <code>98.16%</code>. If we swap out the ReLU activation functions in that model for PReLU, which adds additional parameters (1 for each channel in our configuration) the accuracy reaches <code>98.08%</code> after only 8 epochs! If we leave it run, it achieves a top-score accuracy of <code>98.39%</code>! With only 13 additional parameters.
+      <br>
+      Pruning this updated model then takes us to a total parameter count of <code>575</code>. Simply adding PReLU (13 additional parameters), enabled us to prune almost 100 additional parameters from the model!
+    </p>
+
+    <br>
+    <h2>Interpretability</h2>
+    <p>
+      Okay so this is where I stopped trying to reduce the model further, there are still plenty of things that could be tried such as active sampling, image transformations, model distillation, label smoothing, etc. But that can be left for another day. Let's now end this blog with some analysis of our micro neural network.
+    </p>
+    <p>
+      One potential benefit I see of neural golfed models is there small size and compressed knowledge could help efforts in interpretability. Since there are less neurons/weights to analyse and information is theoretically more condensed/optimised and not needlessly spread over multiple neurons/circuits.
+    </p>
+    <br>
+    <h3><u>High-Level Analysis</u></h3>
+    <p>
+      Analysing the outputs of each channel after the first layer reveals that the 4 kernels in the first layer perform basic edge detection, notably: positive diagonal, negative diagonal, vertical, horizontal. Interestingly, the first channel is inverted, perhaps this channel performs both positive diagonal edge detection and is used to transfer a lower quality image to the next layer, almost like a residual connection?
+    </p>
+    
+    <img src="images/neural-golfing/layer-1-outputs.png" width="50%">
+
+    <p>
+      Looking at the outputs of the other layers don't provide any obvious insights. However, since our feature vector only consists of 36 neurons, they can be plotted and easily visualised. I plotted a heatmap of the average activations of each neuron in the feature vector for each class. Something to note is that the feature vector is actually the output of 4 kernels producing <code>3x3</code> images. So for the below heatmaps, each group of 9 neurons makes up a separate "feature channel". We can see that classes like <code>1</code> and <code>7</code> rely on the last feature channel, potentially indicating that it represents vertical edge detection.
+    </p>
+
+    <figure>
+      <img class="blog-img" src="images/neural-golfing/feature-vectors.png">
+      <figcaption>Heatmaps showing the average activations of each feature in the feature vector for each class</figcaption>
+    </figure>
+
+    <br>
+    <h3><u>Feature Visualisation</u></h3>
+    <p>
+      In order to probe the network further, we can deploy <a href="https://distill.pub/2017/feature-visualization/">feature visualisation</a>. This is a technique that applies backpropagation on input images in order to maximise certain features (neurons, channels, features, etc). I didn't spend too much time fine-tuning the visualisations but insights can still be gleamed.
+    </p>
+    <p>
+      Looking at the feature visualisation for the first layer of channels doesn't give too much detail. Luckily, the investigation of the outputs of these channels already show that they perform edge detection, this can be somewhat seen here. The second channel can be seen to activate the most when the corners are cut off (negative edge detection), the third channel has the first few columns empty (vertical edge detection), and the last channel has the last rows empty (horizontal edge detection). The first channel is a but odd, but matches the inverted images found earlier.
+    </p>
+
+    <figure>
+      <img class="blog-img" src="images/neural-golfing/interp-layer-1-channels.png">
+      <figcaption>Feature visualisation of the first-layer channels</figcaption>
+    </figure>
+
+    <p>
+      Looking at the second layer features, the first and last channels seem to activate the most with vertical and horizontal edges. The second and fourth channels seem to activate along the border, and has some slight hint of diagonal edge detection. The third channel is the most interesting, seeming to both somewhat be a diagonal edge detector and detecting anything in the center of the image.
+    </p>
+
+    <figure>
+      <img class="blog-img" src="images/neural-golfing/interp-layer-2-channels.png">
+      <figcaption>Feature visualisation of the second-layer channels</figcaption>
+    </figure>
+
+    <p>
+      The last layer gets a little more complex. It seems to be that the four edge detectors are still present, with the first and last channels being horizontal and vertical edge detection, perhaps with some curves mixed in. This the last channel being a vertical edge detector also correlates to the <code>1</code> class heavily relying on it.
+    </p>
+
+    <figure>
+      <img class="blog-img" src="images/neural-golfing/interp-layer-3-channels.png">
+      <figcaption>Feature visualisation of the third-layer channels</figcaption>
+    </figure>
+
+    <p>
+      We can also visualise each neuron in the third-layer channels, essentially the feature vector of the network. Doing so is a reminder of how CNNs operate. It might be a little tricky to see (because each image doesn't have a border), but each group of 9 neurons on the feature vector correspond to different regions of the image. This makes intuitive sense, since regional data is propagated through each layer.
+    </p>
+    <p>
+      With this information in mind, and looking back at the average activation heatmap. A conclusion to draw, is that each channel in the last layer not only performs some fuzzy edge detection, but edge detection at certain regions of the image. For example the <code>7</code> class only really cares about vertical edge detection at the bottom of the screen (the last three neurons in the fourth channel), which makes sense since the top half of the screen will mostly be a diagonal/horizontal line.
+    </p>
+
+    <figure>
+      <img class="blog-img" src="images/neural-golfing/interp-feature-neurons.png">
+      <figcaption>Feature visualisation of each neuron in the feature vector</figcaption>
+    </figure>
+
+    <br>
+    <h2>Into the Future</h2>
+    <p>
+      The final solution to this challenge produced a model that only uses <code>575</code> parameters with an accuracy of <code>98%</code>. Much improved from PyTorch's <code>1,199,882</code> parameter model, with only a <code>1%</code> difference in testing accuracy. A lot of things were learned during this challenge and it also produced some fun interpretability results.
+    </p>
+    <p>
+      As mentioned earlier, this was only a test to see how far I could go in compressing a neural network on a basic task. There are still plenty of methods that could be tried and more real-world models that neural golfing can be applied to. If this has inspired you to try model compression and you have some interesting results, consider posting you scores to <a href="https://www.neuralgolfing.com">neuralgolfing.com</a>.
+    </p>
+  </div>
+</body>
+</html>
