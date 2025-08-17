@@ -1,0 +1,88 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>HexHowells</title>
+  <meta name="description" content="HexHowells Blog.">
+  <meta name="author" content="Morgan Howells">
+  <link rel="icon" type="image/x-icon" href="../images/hexlogo.ico">
+
+  <meta property="og:title" content="HexHowells Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.blog.hexhowells.com/">
+  <meta property="og:description" content="HexHowells Blog">
+
+  <link rel="stylesheet" href="../styles.css?v=1.0">
+
+</head>
+
+<body>
+  <div class="blog-header">
+    <div class="title">
+      <h2><a href="https://hexhowells.com/blog.html">HexHowells</a></h2>
+    </div>
+  </div>
+  <div class="content">
+    <h1>Understanding Moravec's Paradox</h1>
+    <p class="blog-date">Aug 17 2025</p>
+    <br>
+    <p>
+      <a href="https://en.wikipedia.org/wiki/Moravec%27s_paradox">Morevec's paradox</a> is a little weird in a few ways. First it's not a paradox, and second it's widely miss-interpreted. At its core, Moravec's paradox is the observation that reasoning takes much less computation compared to sensorimotor and perception tasks. It's often (incorrectly) described as tasks that are easy for humans are difficult for machines and visa versa.
+    </p>
+    <p>
+      The answer from the human's side is relatively simple to explain. <a href="https://en.wikipedia.org/wiki/Moravec%27s_paradox#The_biological_basis_of_human_skills">As hypothesised by Morvec</a>, humans have evolved to be good at tasks that benefit them in survival, such as fine motor control and vision. But this doesn't really explain why machines find certain problems easy or difficult, which is the part of this observation that I want to focus on here.
+    </p>
+
+    <h2>The Key idea</h2>
+    <p>
+      I believe that this observation can be broken down into two components: search space and reward sparsity. In general, ignoring humans or machines, problems are more difficult if their search space is large, and reward signals are sparse.
+    </p>
+    <p>
+      We can take chess as an example. Something that is difficult for humans, since we never evolved to play chess or quite reason in that way. However, machines excel at playing chess. When viewed through the lens of search and rewards, this becomes more clear. Firstly, the average number of moves in a chess game is around 40, and the average branching factor (possible legal moves per state) is 35. Whilst this still is a <a href="https://en.wikipedia.org/wiki/Shannon_number">large search space</a>, compared to other tasks this is relatively small. Additionally, rewards are quite common, either produced via an evaluation function (not perfect) or by waiting until a terminal state is reached.
+    </p>
+    <p>
+      Now compare this to a task such as robotics. A <a href="https://www.unitree.com/g1">bipedal robot</a> will have various actuators for each limb (say 3 per limb, many more for hands/fingers), each actuator can move between 50 to a <a href="https://shop.unitree.com/en-gb/products/b1-motor">few thousand</a> times per second. Not only is the action space large, but the <a href="https://en.wikipedia.org/wiki/Earth">environment</a> which the robot operates in is complex, and it could take tens of thousands of steps to gain a single reward (say folding a single item of clothing).
+    </p>
+    <p>
+      So how did humans solve this problem? Simple, we did it via search as well, with an algorithm called evolution and a reward signal called natural selection. It took around 4 billion years worth of search to get where we are now, but we got there eventually. 
+    </p>
+
+    <h2>Dreaming of Search</h2>
+    <p>
+      Another important aspect of search is the ability to look ahead in time. We are not limited to using search just to learn, we can also use it to inform our actions. In chess, we can use a policy to generate potential chess moves, and simulate them in a board that looks identical to the actual chess board. We can't quite simulate the opponent, but we can assume they will take a close to maximal policy, and if they don't then they are likely going to lose anyway. But the key point here is that we can perfectly simulate the board state. 
+    </p>
+    <p>
+      Compare this to robotics, before the robot moves it's actuators, can we simulate what will happen? Well we could run a physics simulation, but trying to capture all the details of the current environment is just not going to happen given how complex the world is. Which leaves us with two options, running a simulation in <a href="https://arxiv.org/abs/1911.08265">embedding space</a>, and not running a simulation at all.
+    </p>
+    <p>
+      Humans do this pretty well, we have good models of the world and can even <a href="https://www.biorxiv.org/content/10.1101/2024.08.13.607810v1">simulate certain situations when we dream</a>. Of course we gained this ability thanks to evolution, clearly understanding how actions can impact future states is important for survival.
+    </p>
+    
+    <h2>Neural Networks</h2>
+    <p>
+      We can see these principles throughout the field of deep learning. Gradient descent is a search problem, but its a much easier search problem then that of say reinforcement learning (I know this also uses GD! But the actual loss is rarely known). In gradient descent, the input is known, the output is known, all that is required is a mapping between the input and output. It <i>can</i> get more difficult when the model needs to map a single input to various outputs, such as via autoregressive text generation (e.g. "my dog is "; there are multiple correct answers). 
+    </p>
+    <p>
+      However, LLMs have been quite successful over the past few years, but we can also understand this success via these core principles. LLMs have a fixed number of tokens to generate (decreasing the search space) and can have direct feedback on each token generated (whether it was predicted correctly). Once we pre-train an LLM on bulk-text, we can now increase the search space and reward sparsity via fine-tuning. Take RLHF, the network now has a larger search space, since each token that is predicted is actually used as context, and the model doesn't know if the text it's producing is good until it has finished and is evaluated. But since we've greatly pruned our search tree with pre-training, the search space is actually quite small (the LLM already knows roughly how to write good text, instead of outputting random tokens). This observation also aligns with <a href="https://medium.com/syncedreview/yann-lecun-cake-analogy-2-0-a361da560dae">Yann LeCuns Cake</a>.
+    </p>
+    <p>
+      Reinforcement learning is also a search problem, given an environment and a set of possible actions, reach a certain goal that maximises some reward. However, there is no directly obvious path to reach that goal, search spaces can be large and rewards sparse as most actions don't yield a reward. As seen in the field, RL tasks that have both of these properties struggle to converge at all without help (<a href="https://www.nature.com/articles/nature16961">pre-training</a>, <a href="https://www.haonanyu.blog/post/sim2real/">simulators</a>, etc). obviously RL can be applied to simple environments such as Atari, but even this could use improvement.
+    </p>
+
+    <h2>Modelling Hard Problems</h2>
+    <p>
+      Given all this then, we can derive something quite useful from Moravec's Paradox, beyond the large miss-interpretation of "<i>what humans find easy, machines will likely find hard</i>". Instead we can measure how complex a task will be for a neural network by looking at how large the search space is and how sparse the reward signals are.
+    </p>
+    <p>
+      As such, we can predict that certain unsolved tasks will be quite easy to solve once we have enough data to train on. An example of this includes <a href="https://bioconductor.org/books/3.13/OSCA.basic/cell-type-annotation.html">various</a> <a href="https://www.kaggle.com/competitions/stanford-rna-3d-folding">biological</a> <a href="https://www.nature.com/articles/s41592-025-02772-6">tasks</a>, which are currently quite limited by data and how general training data currently is. Whereas other tasks, such as in robotics (cleaning a house, washing dishes, fixing a car, etc), or even long-horizon reasoning tasks (coding an entire software library from scratch, beating a long 3D game, etc), will prove to be difficult.
+    </p>
+    <p>
+      Currently it seems the only available solutions to these hard problems are either: run a search algorithm for a long time (such as with evolution), or figure out an instrumental goal that has a smaller search space and more sparse rewards, then tackle the more complex task downstream with something like RL (such as with LLMs).
+    </p>
+  </div>
+  </div>
+</body>
+</html>
