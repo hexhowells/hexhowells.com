@@ -1,0 +1,68 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Solving Mathematics</title>
+  <meta name="description" content="HexHowells Blog.">
+  <meta name="author" content="Morgan Howells">
+  <link rel="icon" type="image/x-icon" href="../images/hexlogo.ico">
+
+  <meta property="og:title" content="HexHowells Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.blog.hexhowells.com/">
+  <meta property="og:description" content="HexHowells Blog">
+
+  <link rel="stylesheet" href="../styles.css?v=1.0">
+
+</head>
+
+<body>
+  <div class="blog-header">
+    <div class="title">
+      <h2><a href="https://hexhowells.com/blog.html">HexHowells</a></h2>
+    </div>
+  </div>
+  <div class="content">
+    <h1>Solving Mathematics</h1>
+    <p class="blog-date">Oct 09 2026</p>
+    <br>
+    <p>
+      It seems <a href="https://github.com/openai/math">mathematics had its AlphaFold3 moment</a> on Tuesday, it was quite profound to witness, hundreds of problems suddenly solved in one day. Whilst this day was historic, it really left me deeply thinking about the state of things and left me with feelings of both amazement and dread.
+    </p>
+
+    <h2>What is the purpose of math?</h2>
+    <p>
+      I'm not a mathematician, but I can imagine this has shook many up and left them wondering if they will still have a job soon (most likely). There is also an interesting discussion on whether AI should even be solving math? I'm sure mathematicians would like them not to as to keep their job. But it goes deeper than that, again I don't have the experience to really say but I'd imagine this will result in skill atrophy and discourage future mathematicians. But also AI has yet to come up with any new problems or conjectures, and I'd imagine had humans solved the above list of problems, we would have unlocked many more in the process (perhaps verifying the above will do the same?).
+    </p>
+    <p>
+      Another issue with AI solving math is that currently the solutions are messy. I've read that the papers are pretty incomprehensible to read and understanding problem statements written in LEAN seem pretty difficult to me. This is a direct product of <a href="https://arxiv.org/abs/2501.12948">how LLMs are trained</a>, they are trained to produce the correct output, as that is what we can verify. It's much harder to measure the elegance of a proof than it is the correctness of the proof. This is the same reason AI is still bad at writing and producing maintainable code. But whereas in code both the final outcome (what we can verify) and the solution (which we can somewhat verify) need to be elegant, otherwise you end up with an impressive PoC that cannot be maintained.
+    </p>
+    <p>
+      But is this important in math? If im applying the quadratic equation to solve a quadratic inequality problem, I don't care that the proof 
+      of the quadratic equation is elegant, as long as I know its true. That seems an interesting distinction between math and coding, in math the end result seems more important than the implementation. But as discussed above, I'm sure the act of solving a problem and having an elegant proof is valuable in the context of advancing mathematics (instead of just solving the finite problems we currently have).
+    </p>
+
+    <h2>The Burden of Verification</h2>
+    <p>
+      Another point I have on this derives from an interesting insight I read about AI coding. Whilst you could use AI to speed up coding for yourself, if you don't check over and cleanup the code, you end up shifting that responsibility to someone else that cares. In effect no time has been saved, you have just made your life easier whilst burdening someone else, which is selfish and should be avoided.
+    </p>
+    <p>
+      It seems however that OpenAI has taken this same route for mathematics. Spending as little time as possible to produce a lot of work (which is hard to comprehend) and dumping it out into the world to let others verify and clean up. What happens when you change your PhD because AI solved your problem, only to find out years later that it actually hadn't? Whilst checking other people's work is a core part of the mathematical process, there should be a level of assurance that the work you are publishing is of good quality and that you are confident it's correct.
+    </p>
+    <p>
+      We have already seen <a href="https://arxiv.org/abs/2610.08144">issues with the Navier Stokes solution</a>, and <a href="https://github.com/openai/math/blob/main/history.md">multiple redactions</a> in the above list of papers. It's difficult to parse how beneficial this work is to the mathematical community. I understand that if LEAN contains no bugs and we have validated the problem specification then we can confirm the proof, but have these things even been checked? And what of the textual proofs? They should not only be checked by OpenAI, but made more elegant, much like any programmer contributing to the world of software. Don't be lazy and push that burden to everyone else.
+    </p>
+
+    <h2>Post-Epidemic Society</h2>
+    <p>
+      The last point I will touch on briefly (since I think this deserves its own post) is that this announcement made me deeply think about the future of unsolved problems. It started with programming, I trust AI more than most average programmers these days, It seems no human will be as good as AI on broad spectrum mathematics ever again, what next? Chemistry? Biology? Mechanics? Physics? - Whilst these are more rooted in the physical world and thus harder to train on, it will happen in time. 
+    </p>
+    <p>
+      I have a deep passion for learning and solving problems, and I want humanity to continue to do this. But what happens when we have the answer to all of our questions? When we are in a post-epidemic society? What will I spend the rest of my life doing? Whilst I'm in love with the journey, I'm not sure I ever want to reach the destination, AI is pushing us to the end quicker and I'm not sure how I feel about it.
+    </p>
+  </div>
+</body>
+</html>
